@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="熊子皓">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/tags/音乐/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/tags/%E9%9F%B3%E4%B9%90/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+    
+    
+        <!-- Google tag (gtag.js) -->
+        <script src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', '');
+        </script>
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/%E7%86%8A%E5%AD%90%E7%9A%93%EF%BC%88%E9%BB%91%E8%89%B2%EF%BC%89.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/%E7%86%8A%E5%AD%90%E7%9A%93%EF%BC%88%E9%BB%91%E8%89%B2%EF%BC%89.png">
+    <meta name="theme-color" content="#000000">
+    <link rel="shortcut icon" href="/images/%E7%86%8A%E5%AD%90%E7%9A%93%EF%BC%88%E9%BB%91%E8%89%B2%EF%BC%89.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            标签: 音乐 -
+        
+        熊子皓
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    
+<script src="/js/libs/anime.min.js"></script>
+
+    <h1 class="ml13">
+        熊子皓
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+        <link href="" rel="stylesheet">
+    
+    
+    
+        <link href="" rel="stylesheet">
+    
+    
+        <link href="" rel="stylesheet">
+    
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left"},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#000000","secondary":"#033A1F6"},"global":{"fonts":{"chinese":{"enable":true,"family":null,"url":null},"english":{"enable":true,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":true,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"高二（5）班","subtitle":{"text":[" "],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn/?c=k&c=d"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":true,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/Xzh20080702/Xzh20080702.github.io","instagram":null,"zhihu":null,"twitter":null,"email":null,"weixin":"/images/熊子皓.jpg","fa-brands fa-qq":"/images/熊子皓.png","fa-solid fa-microchip-ai":"https://xzh20080702.github.io/"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":true},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"我会等","artist":"承桓","url":"/music/我会等.mp3","cover":"/music/我会等.jpg","lrc":"/music/我会等.lrc","theme":"#ebd0c2"},{"name":"妈妈的话","artist":"Zyboy忠宇","url":"/music/妈妈的话.mp3","cover":"/music/妈妈的话.jpg"},{"name":"把回忆拼好给你","artist":"cici_","url":"/music/把回忆拼好给你.mp3","cover":"/music/把回忆拼好给你.jpg"},{"name":"可不可以","artist":"张紫豪","url":"/music/可不可以.mp3","cover":"/music/可不可以.jpg"},{"name":"悬溺","artist":"葛东琪","url":"/music/悬溺.mp3","cover":"/music/悬溺.jpg"},{"name":"年少的你啊","artist":"浩然H.R","url":"/music/年少的你啊.mp3","cover":"/music/年少的你啊.jpg"},{"name":"青春没有售价","artist":"是可乐鸭","url":"/music/青春没有售价.mp3","cover":"/music/青春没有售价.jpg"},{"name":"我用什么把你留住","artist":"福禄寿FloruitShow","url":"/music/我用什么把你留住 .mp3","cover":"/music/我用什么把你留住 .jpg"},{"name":"听悲伤的情歌","artist":"苏星婕","url":"/music/听悲伤的情歌.mp3","cover":"/music/听悲伤的情歌.jpg"},{"name":"等一场大雨","artist":"苏星婕","url":"/music/等一场大雨.mp3","cover":"/music/等一场大雨.jpg"},{"name":"太阳(氛围版)","artist":"苏星婕","url":"/music/太阳(氛围版).mp3","cover":"/music/太阳(氛围版).jpg"},{"name":"雾起海岸","artist":"苏星婕","url":"/music/雾起海岸.mp3","cover":"/music/雾起海岸.jpg"},{"name":"等不来花开(DJ版)","artist":"苏星婕","url":"/music/等不来花开(DJ版).mp3","cover":"/music/等不来花开(DJ版).jpg"},{"name":"不回头的人","artist":"苏星婕","url":"/music/不回头的人.mp3","cover":"/music/不回头的人.jpg"},{"name":"最好的安排(释怀版)","artist":"苏星婕","url":"/music/最好的安排(释怀版).mp3","cover":"/music/最好的安排(释怀版).jpg"},{"name":"失去以后才明白","artist":"苏星婕","url":"/music/失去以后才明白.mp3","cover":"/music/失去以后才明白.jpg"},{"name":"如果爱忘了","artist":"苏星婕","url":"/music/如果爱忘了.mp3","cover":"/music/如果爱忘了.jpg"},{"name":"我看过","artist":"苏星婕","url":"/music/我看过.mp3","cover":"/music/我看过.jpg"},{"name":"心似烟火","artist":"苏星婕","url":"/music/心似烟火.mp3","cover":"/music/心似烟火.jpg"},{"name":"寂寞烟火","artist":"苏星婕","url":"/music/寂寞烟火.mp3","cover":"/music/寂寞烟火.jpg"},{"name":"天若有情","artist":"苏星婕","url":"/music/天若有情.mp3","cover":"/music/天若有情.jpg"},{"name":"恶作剧(释怀版)","artist":"苏星婕","url":"/music/恶作剧(释怀版).mp3","cover":"/music/恶作剧(释怀版).jpg"},{"name":"我会等(释怀版)","artist":"苏星婕","url":"/music/我会等(释怀版).mp3","cover":"/music/我会等(释怀版).jpg"},{"name":"最后一页(回忆版)","artist":"苏星婕","url":"/music/最后一页(回忆版).mp3","cover":"/music/最后一页(回忆版).jpg"},{"name":"清空","artist":"王忻辰&苏星婕","url":"/music/清空.mp3","cover":"/music/清空.jpg"},{"name":"放晴","artist":"王忻辰&苏星婕","url":"/music/放晴.mp3","cover":"/music/放晴.jpg"},{"name":"迷失幻境","artist":"王忻辰","url":"/music/迷失幻境.mp3","cover":"/music/迷失幻境.jpg"},{"name":"落差(DJ版)","artist":"王忻辰","url":"/music/落差(DJ版).mp3","cover":"/music/落差(DJ版).jpg"},{"name":"时间沦陷","artist":"王忻辰","url":"/music/时间沦陷.mp3","cover":"/music/时间沦陷.jpg"},{"name":"嚣张","artist":"王忻辰","url":"/music/嚣张.mp3","cover":"/music/嚣张.jpg"},{"name":"乌梅子酱","artist":"李荣浩","url":"/music/乌梅子酱.mp3","cover":"/music/乌梅子酱.jpg"},{"name":"李白","artist":"李荣浩","url":"/music/李白.mp3","cover":"/music/李白.jpg"},{"name":"年少有为","artist":"李荣浩","url":"/music/年少有为.mp3","cover":"/music/年少有为.jpg"},{"name":"不遗憾","artist":"李荣浩","url":"/music/不遗憾.mp3","cover":"/music/不遗憾.jpg"},{"name":"戒烟","artist":"李荣浩","url":"/music/戒烟.mp3","cover":"/music/戒烟.jpg"},{"name":"失眠的夜(DJ)","artist":"宋孟君","url":"/music/失眠的夜（DJ）.mp3","cover":"/music/失眠的夜（DJ）.jpg"},{"name":"遗失的心跳","artist":"萧亚轩","url":"/music/遗失的心跳.mp3","cover":"/music/遗失的心跳.jpg"},{"name":"绿色","artist":"陈雪凝","url":"/music/绿色.mp3","cover":"/music/绿色.jpg"},{"name":"天下","artist":"张杰","url":"/music/天下.mp3","cover":"/music/天下.jpg"},{"name":"他不懂","artist":"张杰","url":"/music/他不懂.mp3","cover":"/music/他不懂.jpg"},{"name":"离别开出花","artist":"就是南方凯","url":"/music/离别开出花.mp3","cover":"/music/离别开出花.jpg"},{"name":"巡光","artist":"就是南方凯","url":"/music/巡光.mp3","cover":"/music/巡光.jpg"},{"name":"听(DJ强哥版)","artist":"就是南方凯","url":"/music/听(DJ强哥版).mp3","cover":"/music/听(DJ强哥版).jpg"},{"name":"秋殇别恋(南方凯版)","artist":"就是南方凯","url":"/music/秋殇别恋(南方凯版).mp3","cover":"/music/秋殇别恋(南方凯版).jpg"},{"name":"求佛(新版吉他版)","artist":"就是南方凯","url":"/music/求佛(新版吉他版).mp3","cover":"/music/求佛(新版吉他版).jpg"},{"name":"你就是远方","artist":"就是南方凯","url":"/music/你就是远方.mp3","cover":"/music/你就是远方.jpg"},{"name":"问心","artist":"就是南方凯","url":"/music/问心.mp3","cover":"/music/问心.jpg"},{"name":"潮汐","artist":"IN-K&安苏羽&傅梦彤","url":"/music/潮汐.mp3","cover":"/music/潮汐.jpg"},{"name":"回忆观影券","artist":"IN-K&王忻辰","url":"/music/回忆观影券.mp3","cover":"/music/回忆观影券.jpg"},{"name":"缺氧","artist":"安苏羽","url":"/music/缺氧.mp3","cover":"/music/缺氧.jpg"},{"name":"晚夜微雨问海棠","artist":"镜予歌&喧笑&陈亦洺","url":"/music/晚夜微雨问海棠.mp3","cover":"/music/晚夜微雨问海棠.jpg"},{"name":"爱是无畏的冒险","artist":"程今","url":"/music/爱是无畏的冒险.mp3","cover":"/music/爱是无畏的冒险.jpg"},{"name":"谁","artist":"曲肖冰","url":"/music/谁.mp3","cover":"/music/谁.jpg"},{"name":"在你的身边","artist":"盛哲","url":"/music/在你的身边.mp3","cover":"/music/在你的身边.jpg"},{"name":"其实都没有","artist":"于冬然","url":"/music/其实都没有.mp3","cover":"/music/其实都没有.jpg"},{"name":"天后","artist":"于冬然","url":"/music/天后.mp3","cover":"/music/天后.jpg"},{"name":"爱丫爱丫(Live)","artist":"汪苏泷","url":"/music/爱丫爱丫(Live).mp3","cover":"/music/爱丫爱丫(Live).png"},{"name":"冬眠","artist":"司南","url":"/music/冬眠.mp3","cover":"/music/冬眠.jpg"},{"name":"毒药","artist":"Zealot周星星","url":"/music/毒药.mp3","cover":"/music/毒药.jpg"},{"name":"冷战","artist":"Tizzy T&Vinida万妮达","url":"/music/冷战.mp3","cover":"/music/冷战.jpg"},{"name":"瞬","artist":"郑润泽","url":"/music/瞬.mp3","cover":"/music/瞬.jpg"},{"name":"慢冷(深情版)","artist":"en","url":"/music/慢冷(深情版).mp3","cover":"/music/慢冷(深情版).png"},{"name":"精卫","artist":"王悦辰","url":"/music/精卫.mp3","cover":"/music/精卫.jpg"},{"name":"我记得","artist":"赵雷","url":"/music/我记得.mp3","cover":"/music/我记得.jpg"},{"name":"雾里","artist":"姚六一","url":"/music/雾里.mp3","cover":"/music/雾里.jpg"},{"name":"消愁","artist":"毛不易","url":"/music/消愁.mp3","cover":"/music/消愁.jpg"},{"name":"爱情转移+富士山下","artist":"陈奕迅","url":"/music/爱情转移+富士山下.mp3","cover":"/music/爱情转移+富士山下.jpg"},{"name":"圣诞星 (feat. 杨瑞代)","artist":"周杰伦","url":"/music/圣诞星 (feat. 杨瑞代).mp3","cover":"/music/圣诞星 (feat. 杨瑞代).jpg"},{"name":"晴天","artist":"周杰伦","url":"/music/晴天.mp3","cover":"/music/晴天.jpg"},{"name":"兰亭序","artist":"周杰伦","url":"/music/兰亭序.mp3","cover":"/music/兰亭序.jpg"},{"name":"稻香","artist":"周杰伦","url":"/music/稻香.mp3","cover":"/music/稻香.jpg"},{"name":"说好的幸福呢","artist":"周杰伦","url":"/music/说好的幸福呢.mp3","cover":"/music/说好的幸福呢.jpg"},{"name":"青花瓷","artist":"周杰伦","url":"/music/青花瓷.mp3","cover":"/music/青花瓷.jpg"},{"name":"夜曲","artist":"周杰伦","url":"/music/夜曲.mp3","cover":"/music/夜曲.jpg"},{"name":"蒲公英的约定","artist":"周杰伦","url":"/music/蒲公英的约定.mp3","cover":"/music/蒲公英的约定.jpg"},{"name":"七里香","artist":"周杰伦","url":"/music/七里香.mp3","cover":"/music/七里香.jpg"},{"name":"告白气球","artist":"周杰伦","url":"/music/告白气球.mp3","cover":"/music/告白气球.jpg"},{"name":"反方向的钟","artist":"周杰伦","url":"/music/反方向的钟.mp3","cover":"/music/反方向的钟.jpg"},{"name":"烟花易冷","artist":"周杰伦","url":"/music/烟花易冷.mp3","cover":"/music/烟花易冷.jpg"},{"name":"枫","artist":"周杰伦","url":"/music/枫.mp3","cover":"/music/枫.jpg"},{"name":"花海","artist":"周杰伦","url":"/music/花海.mp3","cover":"/music/花海.jpg"},{"name":"我是如此相信","artist":"周杰伦","url":"/music/我是如此相信.mp3","cover":"/music/我是如此相信.jpg"},{"name":"一路向北","artist":"周杰伦","url":"/music/一路向北.mp3","cover":"/music/一路向北.jpg"},{"name":"我落泪情绪零碎","artist":"周杰伦","url":"/music/我落泪情绪零碎.mp3","cover":"/music/我落泪情绪零碎.jpg"},{"name":"本草纲目","artist":"周杰伦","url":"/music/本草纲目.mp3","cover":"/music/本草纲目.jpg"},{"name":"爱在西元前","artist":"周杰伦","url":"/music/爱在西元前.mp3","cover":"/music/爱在西元前.jpg"},{"name":"简单爱","artist":"周杰伦","url":"/music/简单爱.mp3","cover":"/music/简单爱.jpg"},{"name":"搁浅","artist":"周杰伦","url":"/music/搁浅.mp3","cover":"/music/搁浅.jpg"},{"name":"给我一首歌的时间","artist":"周杰伦","url":"/music/给我一首歌的时间.mp3","cover":"/music/给我一首歌的时间.jpg"},{"name":"听妈妈的话","artist":"周杰伦","url":"/music/听妈妈的话.mp3","cover":"/music/听妈妈的话.jpg"},{"name":"明明就","artist":"周杰伦","url":"/music/明明就.mp3","cover":"/music/明明就.jpg"},{"name":"霍元甲","artist":"周杰伦","url":"/music/霍元甲.mp3","cover":"/music/霍元甲.jpg"},{"name":"半岛铁盒","artist":"周杰伦","url":"/music/半岛铁盒.mp3","cover":"/music/半岛铁盒.jpg"},{"name":"最长的电影","artist":"周杰伦","url":"/music/最长的电影.mp3","cover":"/music/最长的电影.jpg"},{"name":"我不配","artist":"周杰伦","url":"/music/我不配.mp3","cover":"/music/我不配.jpg"},{"name":"菊花台","artist":"周杰伦","url":"/music/菊花台.mp3","cover":"/music/菊花台.jpg"},{"name":"爱人错过","artist":"告五人","url":"/music/爱人错过.mp3","cover":"/music/爱人错过.jpg"},{"name":"带我去找夜生活","artist":"告五人","url":"/music/带我去找夜生活.mp3","cover":"/music/带我去找夜生活.jpg"},{"name":"给你一瓶魔法药水","artist":"告五人","url":"/music/给你一瓶魔法药水.mp3","cover":"/music/给你一瓶魔法药水.jpg"},{"name":"唯一","artist":"告五人","url":"/music/唯一.mp3","cover":"/music/唯一.jpg"},{"name":"我想要占据你","artist":"告五人","url":"/music/我想要占据你.mp3","cover":"/music/我想要占据你.jpg"},{"name":"开往早晨的午夜(Live)","artist":"告五人","url":"/music/开往早晨的午夜(Live).mp3","cover":"/music/开往早晨的午夜(Live).jpg"},{"name":"明天会更好","artist":"胡德夫&张信哲&那英&莫文蔚&何炅&杨宗纬&阿雅&张韶涵&魏如萱&张杰&华晨宇&马嘉祺&告五人","url":"/music/明天会更好.mp3","cover":"/music/明天会更好.jpg"},{"name":"爱无结果","artist":"阿辰（阎辰）,袁小葳","url":"/music/爱无结果.mp3","cover":"/music/爱无结果.jpg"},{"name":"我们的答案","artist":"王赫野，刘至佳","url":"/music/我们的答案.mp3","cover":"/music/我们的答案.jpg"},{"name":"白月光与朱砂痣","artist":"大籽","url":"/music/白月光与朱砂痣.mp3","cover":"/music/白月光与朱砂痣.jpg"},{"name":"星光派对","artist":"赵希予","url":"/music/星光派对.mp3","cover":"/music/星光派对.jpg"},{"name":"暖一杯茶","artist":"邵帅","url":"/music/暖一杯茶.mp3","cover":"/music/暖一杯茶.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":null,"artist":null,"url":"/music/.mp3","cover":"/music/.jpg"},{"name":"姑娘别哭泣(弹唱版)","artist":"柯柯柯啊","url":"/music/姑娘别哭泣(弹唱版).mp3","cover":"/music/姑娘别哭泣(弹唱版).jpg"},{"name":"姑娘在远方","artist":"柯柯柯啊","url":"/music/姑娘在远方.mp3","cover":"/music/姑娘在远方.jpg"},{"name":"一点归鸿( 柯柯吉他版)","artist":"柯柯柯啊","url":"/music/一点归鸿( 柯柯吉他版).mp3","cover":"/music/一点归鸿( 柯柯吉他版).jpg"},{"name":"樱花树下的约定(热搜版)","artist":"柯柯柯啊","url":"/music/樱花树下的约定(热搜版).mp3","cover":"/music/樱花树下的约定(热搜版).jpg"},{"name":"雨过天不晴","artist":"柯柯柯啊","url":"/music/雨过天不晴.mp3","cover":"/music/雨过天不晴.jpg"},{"name":"大海(柯柯吉他版)","artist":"柯柯柯啊","url":"/music/大海(柯柯吉他版).mp3","cover":"/music/大海(柯柯吉他版).jpg"},{"name":"画离弦(柯柯版)","artist":"柯柯柯啊","url":"/music/画离弦(柯柯版).mp3","cover":"/music/画离弦(柯柯版).jpg"},{"name":"山茶花读不懂白玫瑰(吉他版)","artist":"柯柯柯啊","url":"/music/山茶花读不懂白玫瑰(吉他版).mp3","cover":"/music/山茶花读不懂白玫瑰(吉他版).jpg"},{"name":"雷雨季节(柯柯吉他版)","artist":"柯柯柯啊","url":"/music/雷雨季节(柯柯吉他版).mp3","cover":"/music/雷雨季节(柯柯吉他版).jpg"},{"name":"爱(柯柯吉他版)","artist":"柯柯柯啊","url":"/music/爱(柯柯吉他版).mp3","cover":"/music/爱(柯柯吉他版).jpg"},{"name":"来不及抱歉","artist":"柯柯柯啊","url":"/music/来不及抱歉.mp3","cover":"/music/来不及抱歉.jpg"},{"name":"旧梦一场(男生版)","artist":"柯柯柯啊","url":"/music/旧梦一场(男生版).mp3","cover":"/music/旧梦一场(男生版).jpg"},{"name":"黄梅戏(柯柯吉他版)","artist":"柯柯柯啊","url":"/music/黄梅戏(柯柯吉他版).mp3","cover":"/music/黄梅戏(柯柯吉他版).jpg"},{"name":"半山","artist":"柯柯柯啊","url":"/music/半山.mp3","cover":"/music/半山.jpg"},{"name":"寂寞才说爱","artist":"柯柯柯啊","url":"/music/寂寞才说爱.mp3","cover":"/music/寂寞才说爱.jpg"},{"name":"想你3.0","artist":"柯柯柯啊","url":"/music/想你3.0.mp3","cover":"/music/想你3.0.jpg"},{"name":"把回忆拼好给你 (无法回到过去)","artist":"柯柯柯啊","url":"/music/把回忆拼好给你 (无法回到过去).mp3","cover":"/music/把回忆拼好给你 (无法回到过去).jpg"},{"name":"照从前","artist":"柯柯柯啊","url":"/music/照从前.mp3","cover":"/music/照从前.jpg"},{"name":"爱在海对面(弹唱版)","artist":"柯柯柯啊","url":"/music/爱在海对面(弹唱版).mp3","cover":"/music/爱在海对面(弹唱版).png"},{"name":"怎么后来","artist":"柯柯柯啊","url":"/music/怎么后来.mp3","cover":"/music/怎么后来.jpg"},{"name":"爱在海对面","artist":"柯柯柯啊","url":"/music/爱在海对面.mp3","cover":"/music/爱在海对面.png"},{"name":"雾海寻你","artist":"柯柯柯啊","url":"/music/雾海寻你.mp3","cover":"/music/雾海寻你.jpg"},{"name":"最初的梦想 (新版)","artist":"柯柯柯啊","url":"/music/最初的梦想 (新版).mp3","cover":"/music/最初的梦想 (新版).jpg"},{"name":"开往早晨的午夜(男声正式版)","artist":"柯柯柯啊","url":"/music/开往早晨的午夜(男声正式版).mp3","cover":"/music/开往早晨的午夜(男声正式版).jpg"},{"name":"1990-光辉岁月","artist":"Beyond","url":"/music/1990-光辉岁月.mp3","cover":"/music/1990-光辉岁月.jpg"},{"name":"1991-放心去飞","artist":"小虎队","url":"/music/1991-放心去飞.mp3","cover":"/music/1991-放心去飞.jpg"},{"name":"1992-祝你一路顺风","artist":"吴奇隆","url":"/music/1992-祝你一路顺风.mp3","cover":"/music/1992-祝你一路顺风.jpg"},{"name":"1993-海阔天空","artist":"Beyond","url":"/music/1993-海阔天空.mp3","cover":"/music/1993-海阔天空.jpg"},{"name":"1994-同桌的你","artist":"老狼","url":"/music/1994-同桌的你.mp3","cover":"/music/1994-同桌的你.jpg"},{"name":"1995-朋友别哭","artist":"吕方","url":"/music/1995-朋友别哭.mp3","cover":"/music/1995-朋友别哭.jpg"},{"name":"1996-心愿","artist":"四个女生","url":"/music/1996-心愿.mp3","cover":"/music/1996-心愿.jpg"},{"name":"1997-朋友","artist":"周华健","url":"/music/1997-朋友.mp3","cover":"/music/1997-朋友.jpg"},{"name":"1998-当","artist":"动力火车","url":"/music/1998-当.mp3","cover":"/music/1998-当.jpg"},{"name":"1999-那些花儿","artist":"朴树","url":"/music/1999-那些花儿.mp3","cover":"/music/1999-那些花儿.jpg"},{"name":"2000-后来","artist":"刘若英","url":"/music/2000-后来.mp3","cover":"/music/2000-后来.jpg"},{"name":"2001-一生有你","artist":"水木年华","url":"/music/2001-一生有你.mp3","cover":"/music/2001-一生有你.jpg"},{"name":"2002-蓝莲花","artist":"许巍","url":"/music/2002-蓝莲花.mp3","cover":"/music/2002-蓝莲花.jpg"},{"name":"2003-奔跑","artist":"黄征&羽泉","url":"/music/2003-奔跑.mp3","cover":"/music/2003-奔跑.jpg"},{"name":"2004-栀子花开","artist":"何灵","url":"/music/2004-栀子花开.mp3","cover":"/music/2004-栀子花开.jpg"},{"name":"2005-再见","artist":"张震岳","url":"/music/2005-再见.mp3","cover":"/music/2005-再见.jpg"},{"name":"2006-我相信","artist":"张培安","url":"/music/2006-我相信.mp3","cover":"/music/2006-我相信.jpg"},{"name":"2007-最美的太阳","artist":"张杰","url":"/music/2007-最美的太阳.mp3","cover":"/music/2007-最美的太阳.jpg"},{"name":"2008-和你一样","artist":"李宇春","url":"/music/2008-和你一样.mp3","cover":"/music/2008-和你一样.jpg"},{"name":"2009-看得最美的地方","artist":"张韶涵","url":"/music/2009-看得最美的地方.mp3","cover":"/music/2009-看得最美的地方.jpg"},{"name":"2010-北京东路的日子","artist":"华语群星","url":"/music/2010-北京东路的日子.mp3","cover":"/music/2010-北京东路的日子.jpg"},{"name":"2011-干杯","artist":"五月天","url":"/music/2011-干杯.mp3","cover":"/music/2011-干杯.jpg"},{"name":"2012-那些年","artist":"胡夏","url":"/music/2012-那些年.mp3","cover":"/music/2012-那些年.jpg"},{"name":"2013-追梦赤子心","artist":"GALA","url":"/music/2013-追梦赤子心.mp3","cover":"/music/2013-追梦赤子心.jpg"},{"name":"2014-匆匆那年","artist":"王菲","url":"/music/2014-匆匆那年.mp3","cover":"/music/2014-匆匆那年.jpg"},{"name":"2015-你曾是少年","artist":"she","url":"/music/2015-你曾是少年.mp3","cover":"/music/2015-你曾是少年.jpg"},{"name":"2016-不说再见","artist":"好妹妹","url":"/music/2016-不说再见.mp3","cover":"/music/2016-不说再见.jpg"},{"name":"2017-追光者","artist":"芩宁儿","url":"/music/2017-追光者.mp3","cover":"/music/2017-追光者.jpg"},{"name":"2018-起风了","artist":"买辣椒也用卷","url":"/music/2018-起风了.mp3","cover":"/music/2018-起风了.jpg"},{"name":"2019-纪念","artist":"雷雨心","url":"/music/2019-纪念.mp3","cover":"/music/2019-纪念.jpg"},{"name":"2020-少年","artist":"梦然","url":"/music/2020-少年.mp3","cover":"/music/2020-少年.jpg"},{"name":"2021-凤凰花开的路口","artist":"胡夏","url":"/music/2021-凤凰花开的路口.mp3","cover":"/music/2021-凤凰花开的路口.jpg"},{"name":"2022-篇章","artist":"张韶涵&王赫野","url":"/music/2022-篇章.mp3","cover":"/music/2022-篇章.jpg"},{"name":"2023-我们都拥有海洋","artist":"吴青峰","url":"/music/2023-我们都拥有海洋.mp3","cover":"/music/2023-我们都拥有海洋.jpg"},{"name":"2024-xxx","artist":"xxx","url":"/music/2023-xxx.mp3","cover":"/music/2023-xxx.jpg"}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.0","navbar":{"auto_hide":true,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"AI":{"icon":"fa-regular fa-microchip-ai","submenus":{"AI旋风":"https://www.aixuanfeng.com/","秘塔AI搜索":"https://metaso.cn/?s=wetaba"}},"文字识别":{"icon":"fa-regular fa-clipboard","submenus":{"pearOCR":"https://pearocr.com/#/"}},"网站系统":{"icon":"fa-regular fa-desktop","submenus":{"Windows CGA 1.01":"https://www.pcjs.org/software/pcx86/sys/windows/1.01/cga/","Windows CE 4.0":"https://www.compumuseum.com/v86.html?machine=wince400","window 2000":"https://copy.sh/v86/?profile=windows2000","window XP":"https://lrusso.github.io/VirtualXP/VirtualXP.htm","window 7":"https://win7simu.visnalize.com/","WINDOW 8":"https://msradmin.github.io/windows8/start/index.html","WINDOW 10":"https://siquan001.github.io/Win10online/windows/","window 11":"https://win11.blueedge.me/","window 12":"https://tjy-gitnub.github.io/win12/desktop.html","hacker":"http://geekprank.com/hacker/","macos":"https://infinitemac.org/"}},"朋友的网站":{"icon":"fa-regular fa-user-group","submenus":{"文洋侣":"https://newnewwen.github.io","官方":"https://ohevan.com/"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"info","announcement":2024.01,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"}}},"article_date_format":"auto","categories":{"enable":true,"limit":1},"tags":{"enable":true,"limit":1}},"footerStart":"2023/1/1 12:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+        
+<link rel="stylesheet" href="/fontawesome/thin.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/light.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/duotone.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
+
+    
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+
+    <div class="navbar-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/%E7%86%8A%E5%AD%90%E7%9A%93%EF%BC%88%E9%BB%91%E8%89%B2%EF%BC%89.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                熊子皓
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-microchip-ai fa-fw"></i>
+                                    AI
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.aixuanfeng.com/">
+                                                    AI旋风
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://metaso.cn/?s=wetaba">
+                                                    秘塔AI搜索
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-clipboard fa-fw"></i>
+                                    文字识别
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://pearocr.com/#/">
+                                                    PEAROCR
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-desktop fa-fw"></i>
+                                    网站系统
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.pcjs.org/software/pcx86/sys/windows/1.01/cga/">
+                                                    WINDOWS CGA 1.01
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.compumuseum.com/v86.html?machine=wince400">
+                                                    WINDOWS CE 4.0
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://copy.sh/v86/?profile=windows2000">
+                                                    WINDOW 2000
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://lrusso.github.io/VirtualXP/VirtualXP.htm">
+                                                    WINDOW XP
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://win7simu.visnalize.com/">
+                                                    WINDOW 7
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://msradmin.github.io/windows8/start/index.html">
+                                                    WINDOW 8
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://siquan001.github.io/Win10online/windows/">
+                                                    WINDOW 10
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://win11.blueedge.me/">
+                                                    WINDOW 11
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://tjy-gitnub.github.io/win12/desktop.html">
+                                                    WINDOW 12
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="http://geekprank.com/hacker/">
+                                                    HACKER
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://infinitemac.org/">
+                                                    MACOS
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user-group fa-fw"></i>
+                                    朋友的网站
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://newnewwen.github.io">
+                                                    文洋侣
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://ohevan.com/">
+                                                    官方
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-AI"
+                        >
+                            <span>
+                                AI
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-AI">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.aixuanfeng.com/">AI旋风</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://metaso.cn/?s=wetaba">秘塔AI搜索</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-文字识别"
+                        >
+                            <span>
+                                文字识别
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-文字识别">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://pearocr.com/#/">PEAROCR</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-网站系统"
+                        >
+                            <span>
+                                网站系统
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-网站系统">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.pcjs.org/software/pcx86/sys/windows/1.01/cga/">WINDOWS CGA 1.01</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.compumuseum.com/v86.html?machine=wince400">WINDOWS CE 4.0</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://copy.sh/v86/?profile=windows2000">WINDOW 2000</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://lrusso.github.io/VirtualXP/VirtualXP.htm">WINDOW XP</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://win7simu.visnalize.com/">WINDOW 7</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://msradmin.github.io/windows8/start/index.html">WINDOW 8</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://siquan001.github.io/Win10online/windows/">WINDOW 10</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://win11.blueedge.me/">WINDOW 11</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://tjy-gitnub.github.io/win12/desktop.html">WINDOW 12</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="http://geekprank.com/hacker/">HACKER</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://infinitemac.org/">MACOS</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-朋友的网站"
+                        >
+                            <span>
+                                朋友的网站
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-朋友的网站">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://newnewwen.github.io">文洋侣</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://ohevan.com/">官方</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="tag-container">
+	<div class="tag-name">
+		<i class="fa-solid fa-tag"></i>&nbsp;音乐
+	</div>
+	<div class="tag-post-list">
+		
+
+<div class="archive-list-container">
+    
+        <section class="archive-item">
+            <div class="archive-item-header flex flex-row items-center mb-2">
+                <span class="archive-year font-semibold text-3xl mr-2">2024</span>
+                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">2</span>
+            </div>
+            <ul class="article-list pl-8 text-lg leading-[1.5]">
+              
+                
+                    
+                    <li class="article-item" date-is='09-05'>
+                
+                
+                    <a href="/2024/09/05/%E3%80%8A%E6%84%9F%E8%B0%A2%E4%BD%A0%E6%9B%BE%E7%BB%8F%E6%9D%A5%E8%BF%87%E3%80%8B-%E5%91%A8%E6%80%9D%E6%B6%B5-Ayo97/" class="block overflow-hidden">
+                        <span class="article-title mb-0.5 text-2xl">《感谢你曾经来过》- 周思涵 &amp; Ayo97</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='08-29'>
+                
+                
+                    <a href="/2024/08/29/%E7%94%B5%E4%BF%A1%E8%AF%88%E9%AA%97/" class="block overflow-hidden">
+                        <span class="article-title mb-0.5 text-2xl">电信诈骗</span>
+                    </a>
+                
+              
+            </ul>
+        </section>
+    
+</div>
+
+	</div>
+</div>
+
+<div class="tag-paginator">
+	<div class="paginator">
+    <span class="page-number current">1</span>
+</div>
+
+</div>
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">熊子皓</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">访问人数</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">总访问量</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>
