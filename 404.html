@@ -22,7 +22,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
     
-    <meta name="author" content="熊子皓">
+    <meta name="author" content="熊子皓 | 补天">
     <!-- preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,15 +52,15 @@
     
     
     <!--- Icon Part-->
-    <link rel="icon" type="image/png" href="/images/%E7%86%8A%E5%AD%90%E7%9A%93%EF%BC%88%E9%BB%91%E8%89%B2%EF%BC%89.png" sizes="192x192">
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/%E7%86%8A%E5%AD%90%E7%9A%93%EF%BC%88%E9%BB%91%E8%89%B2%EF%BC%89.png">
+    <link rel="icon" type="image/png" href="/images/qq.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/qq.png">
     <meta name="theme-color" content="#000000">
-    <link rel="shortcut icon" href="/images/%E7%86%8A%E5%AD%90%E7%9A%93%EF%BC%88%E9%BB%91%E8%89%B2%EF%BC%89.png">
+    <link rel="shortcut icon" href="/images/qq.png">
     <!--- Page Info-->
     
     <title>
         
-            Page Not Found | 补天集团
+            Page Not Found | blog
         
     </title>
 
@@ -152,7 +152,8 @@
 
 
 <body>
-	<div class="progress-bar-container">
+	<!-- 保留主题原有的全局组件 -->
+<div class="progress-bar-container">
 	
 
 	
@@ -312,21 +313,21 @@
 
 <main class="page-container" id="swup">
 
-	
+    
 
-	<div class="main-content-container flex flex-col justify-between min-h-dvh">
-		<div class="main-content-header">
-			<header class="navbar-container px-6 md:px-12">
+    <div class="main-content-container flex flex-col justify-between min-h-dvh">
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
     <div class="navbar-content transition-navbar ">
         <div class="left">
             
                 <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
-                    <img src="/images/qq.png" class="w-full h-full rounded-sm">
+                    <img src="/images/%E7%86%8A%E5%AD%90%E7%9A%93%EF%BC%88%E7%99%BD%E8%89%B2%EF%BC%89.png" class="w-full h-full rounded-sm">
                 </a>
             
             <a class="logo-title" href="/">
                 
-                补天集团
+                blog
                 
             </a>
         </div>
@@ -759,41 +760,525 @@
 </header>
 
 
-		</div>
+        </div>
 
-		<div class="main-content-body transition-fade-up">
-			
+        <div class="main-content-body transition-fade-up">
+            <div class="main-content">
+                <!-- ========== 光子捕获者游戏区域开始 ========== -->
+                <div class="custom-404-game">
+                    <h1 class="game-title">✨ 光阴渡影 · 404 ✨</h1>
+                    <p class="game-subtitle">页面走丢了，但你可以捕捉光子～</p>
 
-			<div class="main-content">
-				<div class="page-template-container">
-	
+                    <div class="game-wrapper">
+                        <canvas id="gameCanvas"></canvas>
 
-	
+                        <!-- 游戏信息栏：得分 + 计时器（根据模式显示不同内容） -->
+                        <div class="game-info">
+                            <span class="score">得分: <span id="score">0</span></span>
+                            <span class="timer" id="timerDisplay">剩余: <span id="timer">30</span>s</span>
+                        </div>
 
-	<div class="page-template-content markdown-body">
-		
-		<h1>Page Not Found</h1>
-		
+                        <!-- 模式切换按钮组 -->
+                        <!-- 控制按钮：重启 + 返回首页 -->
+                        <div class="mode-switch game-controls">
+                            <button id="modeTimed" class="mode-btn active">⏱️</button>
+                            <button id="restartBtn" class="restart-btn">再来一局</button>
+                            <a href="/" class="back-home">返回首页</a>
+                            <button id="modeCasual" class="mode-btn">🎮</button>
+                        </div>
+                    </div>
 
-		
-	</div>
+                    <!-- 响应式样式，针对移动端优化 + 模式按钮样式 -->
+                    <style>
+                        .custom-404-game {
+                            text-align: center;
+                            padding: 2rem 1rem;
+                            background: rgba(0, 0, 0, 0.2);
+                            border-radius: 24px;
+                            margin: 1rem 0;
+                            backdrop-filter: blur(5px);
+                        }
+                        .game-title {
+                            font-size: 2rem;
+                            margin-bottom: 0.5rem;
+                            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                        }
+                        .game-subtitle {
+                            color: #aaa;
+                            margin-bottom: 1.5rem;
+                            font-size: 1rem;
+                        }
+                        .game-wrapper {
+                            display: inline-block;
+                            width: 100%;
+                            max-width: 700px;
+                            background: #1a1a2e;
+                            border-radius: 20px;
+                            padding: 20px;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                            box-sizing: border-box;
+                        }
+                        #gameCanvas {
+                            display: block;
+                            width: 100%;
+                            height: auto;
+                            border-radius: 12px;
+                            cursor: crosshair;
+                            background: #0f0f1a;
+                            box-shadow: inset 0 0 20px rgba(0,255,255,0.3);
+                            touch-action: none;
+                        }
+                        .game-info {
+                            display: flex;
+                            justify-content: space-between;
+                            margin: 15px 10px 0;
+                            font-size: 1.2rem;
+                            color: #fff;
+                            text-shadow: 0 0 5px cyan;
+                        }
+                        /* 模式切换按钮组 */
+                        .mode-switch {
+                            display: flex;
+                            justify-content: center;
+                            gap: 15px;
+                            margin: 15px 0 10px;
+                            flex-wrap: wrap;
+                        }
+                        .mode-btn {
+                            background: transparent;
+                            border: 2px solid #4ecdc4;
+                            color: #4ecdc4;
+                            font-size: 1rem;
+                            padding: 8px 20px;
+                            border-radius: 40px;
+                            cursor: pointer;
+                            font-weight: bold;
+                            transition: 0.3s;
+                            min-width: 130px;
+                        }
+                        .mode-btn.active {
+                            background: #4ecdc4;
+                            color: #1a1a2e;
+                            border-color: #4ecdc4;
+                        }
+                        .mode-btn:hover {
+                            background: #ff6b6b;
+                            border-color: #ff6b6b;
+                            color: white;
+                        }
+                        .game-controls {
+                            margin-top: 15px;
+                            display: flex;
+                            justify-content: center;
+                            gap: 20px;
+                            flex-wrap: wrap;
+                        }
+                        .restart-btn {
+                            background: #4ecdc4;
+                            border: none;
+                            color: #1a1a2e;
+                            font-size: 1rem;
+                            padding: 10px 24px;
+                            border-radius: 40px;
+                            cursor: pointer;
+                            font-weight: bold;
+                            transition: 0.3s;
+                            min-width: 120px;
+                        }
+                        .restart-btn:hover {
+                            background: #ff6b6b;
+                            color: white;
+                            transform: scale(1.05);
+                        }
+                        .back-home {
+                            color: #4ecdc4;
+                            text-decoration: none;
+                            font-size: 1rem;
+                            padding: 10px 24px;
+                            border: 1px solid #4ecdc4;
+                            border-radius: 40px;
+                            transition: 0.3s;
+                            min-width: 120px;
+                            display: inline-block;
+                            text-align: center;
+                            box-sizing: border-box;
+                        }
+                        .back-home:hover {
+                            background: #4ecdc4;
+                            color: #1a1a2e;
+                        }
 
-	<div class="page-template-comments">
-		
-	</div>
-</div>
+                        /* 移动端优化 */
+                        @media (max-width: 600px) {
+                            .game-title {
+                                font-size: 1.6rem;
+                            }
+                            .game-subtitle {
+                                font-size: 0.9rem;
+                            }
+                            .game-wrapper {
+                                padding: 15px;
+                            }
+                            .game-info {
+                                font-size: 1rem;
+                                margin: 10px 5px 0;
+                            }
+                            .mode-btn {
+                                font-size: 0.9rem;
+                                padding: 6px 16px;
+                                min-width: 10px;
+                            }
+                            .restart-btn, .back-home {
+                                font-size: 0.9rem;
+                                padding: 8px 16px;
+                                min-width: 100px;
+                            }
+                        }
+                        @media (max-width: 400px) {
+                            .game-title {
+                                font-size: 1.4rem;
+                            }
+                            .game-info {
+                                flex-direction: column;
+                                gap: 5px;
+                            }
+                            .mode-switch {
+                                gap: 10px;
+                            }
+                        }
+                    </style>
 
-<div class="paginator">
-	
-</div>
-  
-			</div>
+                    <script>
+                        (function() {
+                            // 获取DOM元素
+                            const canvas = document.getElementById('gameCanvas');
+                            const ctx = canvas.getContext('2d');
+                            const scoreSpan = document.getElementById('score');
+                            const timerSpan = document.getElementById('timer');
+                            const timerDisplaySpan = document.getElementById('timerDisplay'); // 用于改变前缀文字
+                            const restartBtn = document.getElementById('restartBtn');
+                            const modeTimedBtn = document.getElementById('modeTimed');
+                            const modeCasualBtn = document.getElementById('modeCasual');
 
-			
-		</div>
+                            // 游戏状态变量
+                            let photons = [];                 // 光子数组
+                            let score = 0;
+                            // 限时模式: timeValue 表示剩余秒数；休闲模式: timeValue 表示已玩秒数
+                            let timeValue = 30;                // 初始值，根据模式含义不同
+                            let gameActive = false;            // 游戏是否进行中
+                            let gameInterval = null;           // 计时器（每秒更新）
+                            let animationFrame = null;         // 动画帧
+                            let generationInterval = null;     // 光子生成定时器
 
-		<div class="main-content-footer">
-			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+                            // 游戏参数
+                            const MAX_PHOTONS = 15;
+                            const PHOTON_BASE_RADIUS = 12;
+                            const CLICK_TOLERANCE = 8;         // 点击容差
+
+                            // 当前模式: 'timed' 或 'casual'
+                            let currentMode = 'timed';          // 默认为限时模式
+
+                            // 记录上一次画布尺寸，用于坐标映射
+                            let lastCanvasWidth = 0, lastCanvasHeight = 0;
+
+                            // ----- 画布尺寸自适应（响应式核心）-----
+                            function resizeCanvas() {
+                                const container = canvas.parentElement;
+                                if (!container) return;
+                                const containerWidth = container.clientWidth - 40; // 父元素padding左右各20px
+                                if (containerWidth < 250) return;
+
+                                const oldWidth = canvas.width;
+                                const oldHeight = canvas.height;
+
+                                let newWidth = Math.min(containerWidth, 600);
+                                let newHeight = newWidth * 0.8; // 5:4
+
+                                canvas.width = newWidth;
+                                canvas.height = newHeight;
+
+                                if (gameActive && oldWidth > 0 && oldHeight > 0) {
+                                    adjustPhotonPositions(oldWidth, oldHeight, newWidth, newHeight);
+                                }
+
+                                lastCanvasWidth = newWidth;
+                                lastCanvasHeight = newHeight;
+                            }
+
+                            // ----- 调整光子位置（画布大小改变时）-----
+                            function adjustPhotonPositions(oldW, oldH, newW, newH) {
+                                if (!photons.length) return;
+                                const scaleX = newW / oldW;
+                                const scaleY = newH / oldH;
+                                photons.forEach(p => {
+                                    p.x = p.x * scaleX;
+                                    p.y = p.y * scaleY;
+                                    p.radius = p.radius * ((scaleX + scaleY) / 2);
+                                });
+                            }
+
+                            // 初始化尺寸并监听窗口变化
+                            resizeCanvas();
+                            window.addEventListener('resize', resizeCanvas);
+
+                            // ----- 光子类 (不变) -----
+                            class Photon {
+                                constructor() {
+                                    this.reset();
+                                }
+                                reset() {
+                                    this.x = Math.random() * (canvas.width - 60) + 30;
+                                    this.y = Math.random() * (canvas.height - 60) + 30;
+                                    this.vx = (Math.random() - 0.5) * 2.5;
+                                    this.vy = (Math.random() - 0.5) * 2.5;
+                                    this.life = 1.0;
+                                    this.hue = Math.random() * 360;
+                                    this.radius = PHOTON_BASE_RADIUS * (0.8 + Math.random() * 0.5);
+                                }
+                                update() {
+                                    this.x += this.vx;
+                                    this.y += this.vy;
+
+                                    if (this.x < this.radius) {
+                                        this.x = this.radius;
+                                        this.vx *= -0.9;
+                                    } else if (this.x > canvas.width - this.radius) {
+                                        this.x = canvas.width - this.radius;
+                                        this.vx *= -0.9;
+                                    }
+                                    if (this.y < this.radius) {
+                                        this.y = this.radius;
+                                        this.vy *= -0.9;
+                                    } else if (this.y > canvas.height - this.radius) {
+                                        this.y = canvas.height - this.radius;
+                                        this.vy *= -0.9;
+                                    }
+
+                                    this.life -= 0.003;
+                                    return this.life > 0;
+                                }
+                                draw() {
+                                    const opacity = Math.min(this.life, 1) * 0.8;
+                                    ctx.beginPath();
+                                    ctx.arc(this.x, this.y, this.radius * 1.5, 0, Math.PI * 2);
+                                    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 2);
+                                    gradient.addColorStop(0, `hsla(${this.hue}, 100%, 70%, ${opacity})`);
+                                    gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
+                                    ctx.fillStyle = gradient;
+                                    ctx.fill();
+
+                                    ctx.beginPath();
+                                    ctx.arc(this.x, this.y, this.radius * 0.6, 0, Math.PI * 2);
+                                    ctx.fillStyle = `hsl(${this.hue}, 100%, 70%)`;
+                                    ctx.shadowColor = `hsl(${this.hue}, 100%, 60%)`;
+                                    ctx.shadowBlur = 15;
+                                    ctx.fill();
+                                    ctx.shadowBlur = 0;
+                                }
+                                isHit(clickX, clickY) {
+                                    const dx = clickX - this.x;
+                                    const dy = clickY - this.y;
+                                    const dist = Math.sqrt(dx*dx + dy*dy);
+                                    return dist <= this.radius + CLICK_TOLERANCE;
+                                }
+                            }
+
+                            // ----- 生成新光子 -----
+                            function generatePhoton() {
+                                if (!gameActive) return;
+                                if (photons.length < MAX_PHOTONS) {
+                                    photons.push(new Photon());
+                                }
+                            }
+
+                            // ----- 游戏主循环（更新+重绘）-----
+                            function updateGame() {
+                                if (!gameActive) return;
+                                photons = photons.filter(p => p.update());
+                                drawCanvas();
+                                animationFrame = requestAnimationFrame(updateGame);
+                            }
+
+                            // ----- 绘制画布（含背景）-----
+                            function drawCanvas() {
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                ctx.fillStyle = '#0f0f1a';
+                                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                                for (let i = 0; i < 50; i++) {
+                                    if (i % 2 === 0) continue;
+                                    ctx.fillStyle = `rgba(255,255,255,${Math.random()*0.5})`;
+                                    ctx.beginPath();
+                                    ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*2, 0, 2*Math.PI);
+                                    ctx.fill();
+                                }
+                                photons.forEach(p => p.draw());
+                            }
+
+                            // ----- 点击/触摸捕获光子 -----
+                            function handleCanvasClick(e) {
+                                if (!gameActive) return;
+                                e.preventDefault();
+
+                                const rect = canvas.getBoundingClientRect();
+                                const scaleX = canvas.width / rect.width;
+                                const scaleY = canvas.height / rect.height;
+
+                                let clientX, clientY;
+                                if (e.touches) {
+                                    clientX = e.touches[0].clientX;
+                                    clientY = e.touches[0].clientY;
+                                } else {
+                                    clientX = e.clientX;
+                                    clientY = e.clientY;
+                                }
+
+                                const canvasX = (clientX - rect.left) * scaleX;
+                                const canvasY = (clientY - rect.top) * scaleY;
+
+                                for (let i = photons.length - 1; i >= 0; i--) {
+                                    if (photons[i].isHit(canvasX, canvasY)) {
+                                        photons.splice(i, 1);
+                                        score++;
+                                        scoreSpan.textContent = score;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            canvas.addEventListener('click', handleCanvasClick);
+                            canvas.addEventListener('touchstart', handleCanvasClick, { passive: false });
+
+                            // ----- 计时器（根据模式更新）-----
+                            function startTimer() {
+                                if (gameInterval) clearInterval(gameInterval);
+                                gameInterval = setInterval(() => {
+                                    if (!gameActive) return;
+
+                                    if (currentMode === 'timed') {
+                                        // 限时模式：倒计时
+                                        timeValue--;
+                                        timerSpan.textContent = timeValue;
+                                        // 更新显示前缀
+                                        timerDisplaySpan.innerHTML = `剩余: <span id="timer">${timeValue}</span>s`;
+
+                                        if (timeValue <= 0) {
+                                            endGame();
+                                        }
+                                    } else {
+                                        // 休闲模式：正向计时
+                                        timeValue++;
+                                        timerSpan.textContent = timeValue;
+                                        timerDisplaySpan.innerHTML = `已玩: <span id="timer">${timeValue}</span>s`;
+                                        // 休闲模式永不结束，只更新时间
+                                    }
+                                }, 1000);
+                            }
+
+                            // ----- 游戏结束（仅限时模式调用）-----
+                            function endGame() {
+                                gameActive = false;
+                                clearInterval(gameInterval);
+                                clearInterval(generationInterval);
+                                if (animationFrame) cancelAnimationFrame(animationFrame);
+
+                                // 显示结束画面
+                                ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                                ctx.font = 'bold ' + (canvas.width > 400 ? '24px' : '20px') + ' sans-serif';
+                                ctx.fillStyle = '#fff';
+                                ctx.textAlign = 'center';
+                                ctx.fillText('游戏结束', canvas.width/2, canvas.height/2 - 20);
+                                ctx.font = (canvas.width > 400 ? '18px' : '16px') + ' sans-serif';
+                                ctx.fillText(`得分: ${score}`, canvas.width/2, canvas.height/2 + 20);
+                            }
+
+                            // ----- 重启游戏（根据当前模式）-----
+                            function restartGame() {
+                                // 清理旧定时器
+                                if (gameInterval) clearInterval(gameInterval);
+                                if (generationInterval) clearInterval(generationInterval);
+                                if (animationFrame) cancelAnimationFrame(animationFrame);
+
+                                // 重置状态
+                                gameActive = true;
+                                photons = [];
+                                score = 0;
+                                scoreSpan.textContent = '0';
+
+                                // 根据模式设置初始 timeValue 和显示
+                                if (currentMode === 'timed') {
+                                    timeValue = 30;
+                                    timerSpan.textContent = '30';
+                                    timerDisplaySpan.innerHTML = `剩余: <span id="timer">30</span>s`;
+                                } else {
+                                    timeValue = 0;
+                                    timerSpan.textContent = '0';
+                                    timerDisplaySpan.innerHTML = `已玩: <span id="timer">0</span>s`;
+                                }
+
+                                // 确保画布尺寸最新
+                                resizeCanvas();
+
+                                // 开始新循环
+                                startTimer();
+                                generationInterval = setInterval(generatePhoton, 400);
+                                updateGame();
+                            }
+
+                            // ----- 切换模式 -----
+                            function switchMode(mode) {
+                                if (mode === currentMode) return; // 模式未变，不处理
+
+                                currentMode = mode;
+
+                                // 更新按钮激活样式
+                                if (mode === 'timed') {
+                                    modeTimedBtn.classList.add('active');
+                                    modeCasualBtn.classList.remove('active');
+                                } else {
+                                    modeCasualBtn.classList.add('active');
+                                    modeTimedBtn.classList.remove('active');
+                                }
+
+                                // 如果游戏正在运行，重启以应用新模式
+                                if (gameActive) {
+                                    restartGame();
+                                } else {
+                                    // 如果游戏已结束（比如限时模式结束后切换到休闲），也要重置界面
+                                    // 为了简单，直接调用 restartGame 重新开始
+                                    restartGame();
+                                }
+                            }
+
+                            // 绑定模式按钮事件
+                            modeTimedBtn.addEventListener('click', () => switchMode('timed'));
+                            modeCasualBtn.addEventListener('click', () => switchMode('casual'));
+
+                            // 重启按钮事件
+                            restartBtn.addEventListener('click', restartGame);
+
+                            // 页面加载后自动开始游戏（默认限时模式）
+                            window.addEventListener('load', () => {
+                                restartGame();
+                            });
+
+                            // 页面卸载时清理定时器
+                            window.addEventListener('beforeunload', () => {
+                                if (gameInterval) clearInterval(gameInterval);
+                                if (generationInterval) clearInterval(generationInterval);
+                                if (animationFrame) cancelAnimationFrame(animationFrame);
+                            });
+                        })();
+                    </script>
+                </div>
+                <!-- ========== 游戏区域结束 ========== -->
+            </div>
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
     <div class="info-container py-3 text-center">
         
             <div class="customize-info my-1">路漫漫其修远兮，吾将上下而求索!</div>
@@ -804,7 +1289,7 @@
               <span>2023</span>
               -
             
-            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">熊子皓</a>
+            2026&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">熊子皓 | 补天</a>
             
                 
                 <p class="post-count space-x-0.5">
@@ -867,13 +1352,13 @@
         
     </div>  
 </footer>
-		</div>
-	</div>
+        </div>
+    </div>
 
-	
+    
 
-	<div class="right-side-tools-container">
-		<div class="side-tools-container">
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
 	<ul class="hidden-tools-list">
 		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
 			<i class="fa-regular fa-magnifying-glass-plus"></i>
@@ -910,14 +1395,14 @@
 		
 	</ul>
 </div>
-	</div>
+    </div>
 
-	<div class="image-viewer-container">
+    <div class="image-viewer-container">
 	<img src="">
 </div>
 
-	
-	<div class="search-pop-overlay">
+    
+    <div class="search-pop-overlay">
 	<div class="popup search-popup">
 		<div class="search-header">
 			<span class="search-input-field-pre">
@@ -937,7 +1422,7 @@
 		</div>
 	</div>
 </div>
-	
+    
 
 </main>
 
