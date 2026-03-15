@@ -766,55 +766,63 @@
             <div class="main-content">
                 <!-- ========== 光子捕获者游戏区域开始 ========== -->
                 <div class="custom-404-game">
-                    <h1 class="game-title">✨ 光阴渡影 · 404 ✨</h1>
-                    <p class="game-subtitle">页面走丢了，但你可以捕捉光子～</p>
+                    <h1 class="game-title">✨ 捕光渡影 · 404 ✨</h1>
+                    <p class="game-subtitle">虽然页面走丢了，但你可以捕捉光～</p>
 
                     <div class="game-wrapper">
                         <canvas id="gameCanvas"></canvas>
 
-                        <!-- 游戏信息栏：得分 + 计时器（根据模式显示不同内容） -->
+                        <!-- 游戏信息栏：捕光得分 + 计时器（根据模式显示不同内容） -->
                         <div class="game-info">
-                            <span class="score">得分: <span id="score">0</span></span>
+                            <span class="score">捕光: <span id="score">0</span></span>
                             <span class="timer" id="timerDisplay">剩余: <span id="timer">30</span>s</span>
                         </div>
 
                         <!-- 模式切换按钮组 -->
                         <!-- 控制按钮：重启 + 返回首页 -->
                         <div class="mode-switch game-controls">
-                            <button id="modeTimed" class="mode-btn active">⏱️</button>
-                            <button id="restartBtn" class="restart-btn">再来一局</button>
+                            <button id="modeTimed" class="mode-btn active">「竞」</button>
+                            <button id="restartBtn" class="restart-btn">再寻一次</button>
                             <a href="/" class="back-home">返回首页</a>
-                            <button id="modeCasual" class="mode-btn">🎮</button>
+                            <button id="modeCasual" class="mode-btn">「漫」</button>
                         </div>
                     </div>
 
                     <!-- 响应式样式，针对移动端优化 + 模式按钮样式 -->
                     <style>
+                        /* {
+                          outline: 1px solid red;
+                        }*/
                         .custom-404-game {
                             text-align: center;
-                            padding: 2rem 1rem;
-                            background: rgba(0, 0, 0, 0.2);
+                            padding: 1rem 0;
+                            background: transparent;
                             border-radius: 24px;
-                            margin: 1rem 0;
+                            margin: 0 0;
                             backdrop-filter: blur(5px);
                         }
                         .game-title {
                             font-size: 2rem;
                             margin-bottom: 0.5rem;
-                            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                            background: linear-gradient(45deg, #ff9090, #77e0fa);
                             -webkit-background-clip: text;
                             -webkit-text-fill-color: transparent;
+                            font-weight: 700;            /* 加粗 */
+                            letter-spacing: 10px;    /* 正值增加间距，负值减小 */
                         }
                         .game-subtitle {
                             color: #aaa;
-                            margin-bottom: 1.5rem;
+                            margin-bottom: 1.2rem;
                             font-size: 1rem;
+                            font-weight: 700;            /* 加粗 */
+                            letter-spacing: 2px;    /* 正值增加间距，负值减小 */
                         }
                         .game-wrapper {
                             display: inline-block;
                             width: 100%;
                             max-width: 700px;
-                            background: #1a1a2e;
+                            background: #fcf4cdbc; /* 原色半透明 */
+                            backdrop-filter: blur(5px);        /* 毛玻璃效果（可选） */
                             border-radius: 20px;
                             padding: 20px;
                             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -827,16 +835,16 @@
                             border-radius: 12px;
                             cursor: crosshair;
                             background: #0f0f1a;
-                            box-shadow: inset 0 0 20px rgba(0,255,255,0.3);
+                            box-shadow: inset 0 0 20px #1a94bc(0,255,255,0.3);
                             touch-action: none;
                         }
                         .game-info {
                             display: flex;
                             justify-content: space-between;
                             margin: 15px 10px 0;
-                            font-size: 1.2rem;
-                            color: #fff;
-                            text-shadow: 0 0 5px cyan;
+                            font-size: 1.3rem;
+                            color: #1d1d1d;
+                            text-shadow: 0 0 5px #ffffffba;
                         }
                         /* 模式切换按钮组 */
                         .mode-switch {
@@ -848,24 +856,25 @@
                         }
                         .mode-btn {
                             background: transparent;
-                            border: 2px solid #4ecdc4;
-                            color: #4ecdc4;
+                            border: 2px solid #4ea1cd;
+                            color: #4ea1cd;
                             font-size: 1rem;
                             padding: 8px 20px;
                             border-radius: 40px;
                             cursor: pointer;
-                            font-weight: bold;
+                            font-weight: 700;
                             transition: 0.3s;
                             min-width: 130px;
                         }
                         .mode-btn.active {
-                            background: #4ecdc4;
-                            color: #1a1a2e;
-                            border-color: #4ecdc4;
+                            background: #4ea1cd;
+                            color: #ffffff;
+                            border-color: #4ea1cd;
+                            font-weight: 700;            /* 加粗 */
                         }
                         .mode-btn:hover {
-                            background: #ff6b6b;
-                            border-color: #ff6b6b;
+                            background: #ee3f4d;
+                            border-color: #ee3f4d;
                             color: white;
                         }
                         .game-controls {
@@ -876,9 +885,9 @@
                             flex-wrap: wrap;
                         }
                         .restart-btn {
-                            background: #4ecdc4;
+                            background: #4ea1cd;
                             border: none;
-                            color: #1a1a2e;
+                            color: #ffffff;
                             font-size: 1rem;
                             padding: 10px 24px;
                             border-radius: 40px;
@@ -893,11 +902,11 @@
                             transform: scale(1.05);
                         }
                         .back-home {
-                            color: #4ecdc4;
+                            color: #4ea1cd;
                             text-decoration: none;
                             font-size: 1rem;
                             padding: 10px 24px;
-                            border: 1px solid #4ecdc4;
+                            border: 2px solid #4ea1cd;
                             border-radius: 40px;
                             transition: 0.3s;
                             min-width: 120px;
@@ -906,14 +915,16 @@
                             box-sizing: border-box;
                         }
                         .back-home:hover {
-                            background: #4ecdc4;
-                            color: #1a1a2e;
+                            background: #ff6b6b;
+                            color: #ffffff;
+                            border: none;        /* 边框消失 */
                         }
 
                         /* 移动端优化 */
-                        @media (max-width: 600px) {
+                        @media (max-width: 800px) {
                             .game-title {
                                 font-size: 1.6rem;
+                                letter-spacing: 5px; 
                             }
                             .game-subtitle {
                                 font-size: 0.9rem;
@@ -927,13 +938,13 @@
                             }
                             .mode-btn {
                                 font-size: 0.9rem;
-                                padding: 6px 16px;
-                                min-width: 10px;
+                                padding: 6px 8px;
+                                min-width: 1px;
                             }
                             .restart-btn, .back-home {
                                 font-size: 0.9rem;
-                                padding: 8px 16px;
-                                min-width: 100px;
+                                padding: 8px 10px;
+                                min-width: 75px;
                             }
                         }
                         @media (max-width: 400px) {
@@ -1189,9 +1200,9 @@
                                 ctx.font = 'bold ' + (canvas.width > 400 ? '24px' : '20px') + ' sans-serif';
                                 ctx.fillStyle = '#fff';
                                 ctx.textAlign = 'center';
-                                ctx.fillText('游戏结束', canvas.width/2, canvas.height/2 - 20);
+                                ctx.fillText('寻光结束', canvas.width/2, canvas.height/2 - 20);
                                 ctx.font = (canvas.width > 400 ? '18px' : '16px') + ' sans-serif';
-                                ctx.fillText(`得分: ${score}`, canvas.width/2, canvas.height/2 + 20);
+                                ctx.fillText(`捕光: ${score}`, canvas.width/2, canvas.height/2 + 20);
                             }
 
                             // ----- 重启游戏（根据当前模式）-----
