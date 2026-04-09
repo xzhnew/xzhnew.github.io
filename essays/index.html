@@ -884,8 +884,9 @@
             </div>
         
         <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
-            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
-            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 「 一个神奇的blog平台 」  驱动 
+</span>
+            <span class="text-sm lg:block">主题&nbsp;：被略微改动的<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
         </div>
         
         
@@ -914,6 +915,225 @@
         
     </div>  
 </footer>
+
+
+
+<!-- ====================== 磁性磁吸鼠标指针0.0.3（不完美但支持前端开关版）====================== -->
+<!-- 
+  ============================================
+  参数修改指南（请根据需求修改下方配置区域）
+  ============================================
+  
+  1. 指针外观修改 → 见 <style> 标签内
+  2. 吸附强度、边距等 → 见 JS 中的配置区域
+  3. 强制正方形元素 → fixedSquareSelectors 数组
+  4. 忽略元素 → ignoreClasses 数组（已适配游戏区域：忽略画布和游戏内文字，但不忽略按钮）
+-->
+<style>
+.pointer {
+    --width: 4rem;
+    --height: 4rem;
+    position: fixed;
+    top: calc(var(--height) / -2);
+    left: calc(var(--width) / -2);
+    width: var(--width);
+    height: var(--height);
+    transition: all 0.16s ease-out;
+    pointer-events: none;
+    z-index: 99999 !important;
+    animation: rotatePointer 10s linear infinite;
+}
+@keyframes rotatePointer {
+    0% { transform: translate(var(--x, 0), var(--y, 0)) rotate(0deg); }
+    100% { transform: translate(var(--x, 0), var(--y, 0)) rotate(360deg); }
+}
+.pointer .corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #17f700;
+    background: transparent;
+}
+.pointer .corner:nth-child(1) { top:0; left:0; border-right:none; border-bottom:none; }
+.pointer .corner:nth-child(2) { top:0; right:0; border-left:none; border-bottom:none; }
+.pointer .corner:nth-child(3) { bottom:0; left:0; border-right:none; border-top:none; }
+.pointer .corner:nth-child(4) { bottom:0; right:0; border-left:none; border-top:none; }
+.pointer .center-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px;
+    height: 4px;
+    background: #17f700;
+    border-radius: 50%;
+}
+@media (max-width: 768px) {
+    .pointer { display: none !important; }
+}
+</style>
+
+<div class="pointer">
+  <div class="corner"></div>
+  <div class="corner"></div>
+  <div class="corner"></div>
+  <div class="corner"></div>
+  <div class="center-dot"></div>
+</div>
+
+<script data-swup-reload-script>
+// 全局开关（本地存储记忆）
+let magneticEnabled = localStorage.getItem('magnetic') !== 'false';
+const pointerEl = document.querySelector('.pointer');
+
+// 初始化显示状态
+function updatePointer() {
+  pointerEl.style.display = magneticEnabled ? '' : 'none';
+}
+updatePointer();
+
+const pointer = {
+  container: document.querySelector(".pointer"),
+  current_target: null,
+  init() {
+    if (window.innerWidth <= 768) return;
+    window.addEventListener("mousemove", this.move.bind(this));
+    this.bindAll();
+    document.addEventListener('swup:contentReplaced', () => this.bindAll());
+  },
+  move(e) {
+    if (!magneticEnabled) return;
+    let x = e.clientX;
+    let y = e.clientY;
+    if (this.current_target) {
+      const rect = this.current_target.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const sticky = 0.05;
+      x = cx + (x - cx) * sticky;
+      y = cy + (y - cy) * sticky;
+    }
+    this.container.style.setProperty('--x', x + 'px');
+    this.container.style.setProperty('--y', y + 'px');
+    this.container.style.transform = `translate(${x}px, ${y}px)`;
+  },
+  stopRotate() { this.container.style.animation = "none"; },
+  startRotate() { this.container.style.animation = "rotatePointer 10s linear infinite"; },
+  bindAll() {
+    // ======================== 配置区域 ========================
+    const ignoreClasses = [
+      "#gameCanvas",
+      ".game-title",
+      ".game-subtitle",
+      ".game-info",
+      ".score",
+      ".timer",
+      ".target-info",
+      ".sequence-info",
+      "#targetColorBox",
+      "#score",
+      "#timer",
+      "#timerDisplay",
+      "#sequenceCount",
+      "svg",
+      ".fa-xs", ".fa-sm", ".fa-lg", ".fa-fw",
+      ".fa-solid", ".fa-regular",
+      "input", "textarea", "select"
+    ];
+    const tightTextClasses = [
+      ".home-article-content.markdown-body",
+      ".customize-info.my-1"
+    ];
+    const mustHaveClasses = [
+      "button",
+      ".mode-btn",
+      ".restart-btn",
+      ".pause-btn",
+      ".back-home",
+      "a[href]",
+      ".avatar",
+      ".social-contact-item a",
+      "#text"
+    ];
+    const normalTextClasses = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "span", "div", "li"];
+    const fixedSquareSelectors = [
+      ".social-contact-item a",
+      "#text",
+      ".avatar"
+    ];
+    const fixedSquareSize = "60px";
+    // ==========================================================
+
+    const ignoreSelector = ignoreClasses.join(",");
+    const tightTextSelector = tightTextClasses.join(",");
+    const mustHaveSelector = mustHaveClasses.join(",");
+    const fixedSquareSelector = fixedSquareSelectors.join(",");
+
+    const bindElement = (ele) => {
+      if (ele.closest(ignoreSelector)) return;
+      if (ele.hasAttribute('data-magnetic-bound')) return;
+      ele.setAttribute('data-magnetic-bound', 'true');
+
+      let getPadding = () => 4;
+      if (ele.matches(tightTextSelector)) getPadding = () => 2;
+      else if (ele.matches(mustHaveSelector)) getPadding = () => 8;
+
+      ele.addEventListener("mouseenter", () => {
+        this.current_target = ele;
+        this.stopRotate();
+        let width, height;
+        if (ele.matches(fixedSquareSelector)) {
+          width = fixedSquareSize;
+          height = fixedSquareSize;
+        } else {
+          const r = ele.getBoundingClientRect();
+          const pad = getPadding();
+          width = (r.width + pad) + 'px';
+          height = (r.height + pad) + 'px';
+        }
+        this.container.style.setProperty("--width", width);
+        this.container.style.setProperty("--height", height);
+      });
+      ele.addEventListener("mouseleave", () => {
+        this.current_target = null;
+        this.startRotate();
+        this.container.style.setProperty("--width", "4rem");
+        this.container.style.setProperty("--height", "4rem");
+      });
+    };
+
+    const allTargets = document.querySelectorAll([tightTextSelector, mustHaveSelector, normalTextClasses.join(",")].join(","));
+    allTargets.forEach(ele => {
+      const rect = ele.getBoundingClientRect();
+      if (normalTextClasses.some(cls => ele.matches(cls)) && (rect.width < 26 || rect.height < 26)) return;
+      bindElement(ele);
+    });
+
+    document.body.addEventListener("mouseenter", (e) => {
+      let target = e.target;
+      while (target && target !== document.body) {
+        if (target.matches && (target.matches(tightTextSelector) || target.matches(mustHaveSelector) || target.matches(normalTextClasses.join(",")))) {
+          const rect = target.getBoundingClientRect();
+          if (normalTextClasses.some(cls => target.matches(cls)) && (rect.width < 26 || rect.height < 26)) break;
+          if (!target.hasAttribute('data-magnetic-bound')) bindElement(target);
+          break;
+        }
+        target = target.parentElement;
+      }
+    }, true);
+  }
+};
+pointer.init();
+
+// ========== 开关监听（点击立即生效）==========
+window.toggleMagnetic = function () {
+  magneticEnabled = !magneticEnabled;
+  localStorage.setItem('magnetic', magneticEnabled);
+  updatePointer();
+}
+</script>
+
+
 		</div>
 	</div>
 
@@ -921,6 +1141,7 @@
 
 	<div class="right-side-tools-container">
 		<div class="side-tools-container">
+	<!-- 隐藏工具列表（点击齿轮后显示） -->
 	<ul class="hidden-tools-list">
 		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
 			<i class="fa-regular fa-magnifying-glass-plus"></i>
@@ -934,6 +1155,12 @@
 			<i class="fa-regular fa-moon"></i>
 		</li>
 
+		<!-- ========== 新增：磁性鼠标指针开关 ========== -->
+	    <li class="right-bottom-tools tool-magnetic-pointer flex justify-center items-center" onclick="toggleMagnetic()">
+            <i class="fa-regular fa-computer-mouse"></i>
+        </li>
+        <!-- ========== 新增结束 ========== -->
+
 		<!-- rss -->
 		
 
@@ -944,6 +1171,7 @@
 		</li>
 	</ul>
 
+    <!-- 可见工具列表（始终显示） -->
 	<ul class="visible-tools-list">
 		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
 			<i class="fa-regular fa-cog fa-spin"></i>

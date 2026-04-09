@@ -783,7 +783,7 @@
                             </div>
                         </div>
 
-                        <!-- 按钮组 -->
+                        <!-- 按钮组：暂停按钮单独占一行（移动端通过CSS实现） -->
                         <div class="mode-switch game-controls">
                             <button id="modeTimed" class="mode-btn active">「竞」</button>
                             <button id="restartBtn" class="restart-btn">再寻一次</button>
@@ -793,7 +793,7 @@
                         </div>
                     </div>
 
-                    <!-- 引入 SweetAlert2 和题库 -->
+                    <!-- 引入 SweetAlert2 和题库（题库文件已存在，确保路径正确） -->
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                     <script src="/js/question/easy.js"></script>
                     <script src="/js/question/medium.js"></script>
@@ -801,13 +801,20 @@
 
                     <!-- 样式定义 -->
                     <style>
+                        /* 修复移动端垂直居中 */
+                        .main-content-body {
+                            display: flex;
+                            align-items: center;
+                            min-height: calc(100vh - 120px); /* 根据实际导航栏+页脚高度调整 */
+                        }
                         .custom-404-game {
                             text-align: center;
                             padding: 1rem 0;
                             background: transparent;
                             border-radius: 24px;
-                            margin: 0 0;
+                            margin: 0;
                             backdrop-filter: blur(5px);
+                            width: 100%;
                         }
                         .game-title {
                             font-size: 2rem;
@@ -835,6 +842,7 @@
                             padding: 20px;
                             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
                             box-sizing: border-box;
+                            margin: 0 auto;
                         }
                         #gameCanvas {
                             display: block;
@@ -863,12 +871,19 @@
                             gap: 6px;
                             font-size: 1rem;
                         }
+                        /* 按钮容器：Flex 布局，允许换行 */
                         .mode-switch {
                             display: flex;
                             justify-content: center;
                             gap: 15px;
                             margin: 15px 0 10px;
                             flex-wrap: wrap;
+                        }
+                        .mode-btn, .restart-btn, .back-home, .pause-btn {
+                            /* 通用按钮基础样式 */
+                            transition: 0.3s;
+                            cursor: pointer;
+                            font-weight: 700;
                         }
                         .mode-btn {
                             background: transparent;
@@ -877,28 +892,17 @@
                             font-size: 1rem;
                             padding: 8px 20px;
                             border-radius: 40px;
-                            cursor: pointer;
-                            font-weight: 700;
-                            transition: 0.3s;
                             min-width: 130px;
                         }
                         .mode-btn.active {
                             background: #4ea1cd;
                             color: #ffffff;
                             border-color: #4ea1cd;
-                            font-weight: 700;
                         }
                         .mode-btn:hover {
                             background: #ee3f4d;
                             border-color: #ee3f4d;
                             color: white;
-                        }
-                        .game-controls {
-                            margin-top: 15px;
-                            display: flex;
-                            justify-content: center;
-                            gap: 20px;
-                            flex-wrap: wrap;
                         }
                         .restart-btn {
                             background: #4ea1cd;
@@ -907,26 +911,18 @@
                             font-size: 1rem;
                             padding: 10px 24px;
                             border-radius: 40px;
-                            cursor: pointer;
-                            font-weight: bold;
-                            transition: 0.3s;
                             min-width: 120px;
                         }
                         .restart-btn:hover {
                             background: #ff6b6b;
-                            color: white;
                             transform: scale(1.05);
                         }
-                        /* 暂停按钮：无边框，透明背景，仅图标 */
                         .pause-btn {
                             background: transparent;
                             border: none;
                             color: #4ea1cd;
                             font-size: 1.2rem;
                             padding: 10px 20px;
-                            cursor: pointer;
-                            font-weight: bold;
-                            transition: 0.3s;
                             min-width: 60px;
                         }
                         .pause-btn:hover:not(:disabled) {
@@ -944,7 +940,6 @@
                             padding: 10px 24px;
                             border: 2px solid #4ea1cd;
                             border-radius: 40px;
-                            transition: 0.3s;
                             min-width: 120px;
                             display: inline-block;
                             text-align: center;
@@ -956,8 +951,8 @@
                             border: none;
                         }
 
-                        /* 移动端优化 */
-                        @media (max-width: 850px) {
+                        /* 移动端优化：小屏幕下让暂停按钮单独占一行并居中 */
+                        @media (max-width: 825px) {
                             .game-title {
                                 font-size: 1.6rem;
                                 letter-spacing: 5px;
@@ -971,33 +966,41 @@
                             .game-info {
                                 font-size: 1rem;
                                 margin: 10px 5px 0;
-                            }
-                            .mode-btn {
-                                font-size: 0.9rem;
-                                padding: 6px 8px;
-                                min-width: 1px;
-                            }
-                            .pause-btn {
-                                font-size: 0.9rem;
-                                padding: 6px 8px;
-                                min-width: 1px;
-                            }
-                            .restart-btn, .back-home {
-                                font-size: 0.9rem;
-                                padding: 8px 10px;
-                                min-width: 75px;
-                            }
-                        }
-                        @media (max-width: 400px) {
-                            .game-title {
-                                font-size: 1.4rem;
-                            }
-                            .game-info {
                                 flex-direction: column;
                                 gap: 5px;
                             }
+                            /* 按钮容器：允许换行，并让暂停按钮独占一行 */
                             .mode-switch {
                                 gap: 10px;
+                            }
+                            /* 让暂停按钮在移动端占满整行，居中显示 */
+                            .pause-btn {
+                                order: 10;          /* 确保它在最后 */
+                                width: 100%;
+                                margin-top: 8px;
+                                text-align: center;
+                                font-size: 1.4rem;
+                                padding: 8px 0;
+                            }
+                            /* 其他按钮保持原有大小，可适当缩小 */
+                            .mode-btn, .restart-btn, .back-home {
+                                font-size: 0.85rem;
+                                padding: 6px 12px;
+                                min-width: 70px;
+                            }
+                        }
+
+                        /* 超小屏幕进一步调整 */
+                        @media (max-width: 480px) {
+                            .game-title {
+                                font-size: 1.4rem;
+                                letter-spacing: 4px;
+                            }
+                            .game-subtitle {
+                                font-size: 0.8rem;
+                            }
+                            .score, .timer {
+                                font-size: 1rem;
                             }
                         }
                     </style>
@@ -1007,7 +1010,7 @@
                             // ----- 游戏配置参数 -----
                             const MAX_PHOTONS = 20;
                             const PHOTON_BASE_RADIUS = 12;
-                            const CLICK_TOLERANCE = 10;
+                            const CLICK_TOLERANCE = 15;          // 移动端增大点击容差
                             const LARGE_PHOTON_PROB = 0.3;
                             const SMALL_PHOTON_LIFE_DECAY = 0.003;
                             const LARGE_PHOTON_LIFE_DECAY = 0.0015;
@@ -1035,17 +1038,17 @@
                             let gameInterval = null;
                             let animationFrame = null;
                             let generationInterval = null;
-                            let currentMode = 'timed';          // 'timed' 或 'casual'
+                            let currentMode = 'timed';
                             let targetColorIndex = Math.floor(Math.random() * COLOR_ORDER.length);
                             let lastCanvasWidth = 0, lastCanvasHeight = 0;
 
-                            // 暂停相关（仅休闲模式使用）
+                            // 暂停相关
                             let isPaused = false;
 
-                            // 人机验证相关（仅竞模式）
-                            let captchaTriggered = false;       // 是否已触发过
-                            let captchaActive = false;          // 验证是否进行中
-                            let captchaTriggerTime = null;      // 触发验证的时刻（剩余秒数）
+                            // 人机验证相关
+                            let captchaTriggered = false;
+                            let captchaActive = false;
+                            let captchaTriggerTime = null;
 
                             // ----- 题库（从全局变量获取）-----
                             const questionBank = {
@@ -1058,10 +1061,10 @@
                             function updateScoreDisplay() { scoreSpan.textContent = score; }
                             function updateTargetColorDisplay() { targetColorBox.style.backgroundColor = COLOR_ORDER[targetColorIndex]; }
 
-                            // ----- 光子类（大小光子、颜色切换、3秒等待）-----
+                            // ----- 光子类 -----
                             class Photon {
                                 constructor(type) {
-                                    this.type = type;               // 'small' 或 'large'
+                                    this.type = type;
                                     this.radius = type === 'large' ? PHOTON_BASE_RADIUS * 1.5 : PHOTON_BASE_RADIUS * (0.8 + Math.random() * 0.5);
                                     this.life = 1.0;
                                     this.x = Math.random() * (canvas.width - 2 * this.radius) + this.radius;
@@ -1069,13 +1072,11 @@
                                     this.vx = (Math.random() - 0.5) * 2.5;
                                     this.vy = (Math.random() - 0.5) * 2.5;
                                     if (type === 'large') {
-                                        // 大光子初始颜色不能等于目标色
                                         do {
                                             this.colorIndex = Math.floor(Math.random() * COLOR_ORDER.length);
                                         } while (this.colorIndex === targetColorIndex);
                                         this.hasThreePointChance = true;
                                         this.hasBeenClicked = false;
-                                        this.targetHitTime = null;
                                         this.threePointTimer = null;
                                     } else {
                                         this.hue = Math.random() * 360;
@@ -1085,16 +1086,14 @@
                                 update() {
                                     this.x += this.vx;
                                     this.y += this.vy;
-                                    // 边界反弹
                                     if (this.x < this.radius) { this.x = this.radius; this.vx *= -0.9; }
                                     else if (this.x > canvas.width - this.radius) { this.x = canvas.width - this.radius; this.vx *= -0.9; }
                                     if (this.y < this.radius) { this.y = this.radius; this.vy *= -0.9; }
                                     else if (this.y > canvas.height - this.radius) { this.y = canvas.height - this.radius; this.vy *= -0.9; }
-                                    // 寿命衰减
                                     const decay = this.type === 'large' ? LARGE_PHOTON_LIFE_DECAY : SMALL_PHOTON_LIFE_DECAY;
                                     this.life -= decay;
                                     if (this.life <= 0) {
-                                        // 寿命结束，若为大光子且被点击过但未得3分，则加1分
+                                        // 寿命结束：若为大光子且被点击过但从未得3分，则加1分
                                         if (this.type === 'large' && this.hasBeenClicked && this.hasThreePointChance) {
                                             score++;
                                             updateScoreDisplay();
@@ -1123,7 +1122,6 @@
                                         ctx.shadowBlur = 0;
                                     } else {
                                         const color = COLOR_ORDER[this.colorIndex];
-                                        const opacity = Math.min(this.life, 1) * 0.9;
                                         ctx.beginPath();
                                         ctx.arc(this.x, this.y, this.radius * 1.5, 0, Math.PI * 2);
                                         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 2);
@@ -1148,7 +1146,7 @@
                                 }
                             }
 
-                            // ----- 生成光子（区分大小）-----
+                            // ----- 生成光子 -----
                             function generatePhoton() {
                                 if (!gameActive || isPaused || captchaActive) return;
                                 if (photons.length < MAX_PHOTONS) {
@@ -1157,7 +1155,7 @@
                                 }
                             }
 
-                            // ----- 大光子点击处理（颜色切换 + 3秒等待）-----
+                            // ----- 大光子点击处理（颜色切换 + 3秒等待得3分）-----
                             function handleLargePhotonClick(photon, index) {
                                 if (!photon.hasBeenClicked) photon.hasBeenClicked = true;
                                 if (!photon.hasThreePointChance) {
@@ -1167,11 +1165,15 @@
                                 }
                                 // 切换颜色
                                 photon.colorIndex = (photon.colorIndex + 1) % COLOR_ORDER.length;
-                                // 清除之前的定时器
-                                if (photon.threePointTimer) clearTimeout(photon.threePointTimer);
+                                // 清除之前的定时器（如果有）
+                                if (photon.threePointTimer) {
+                                    clearTimeout(photon.threePointTimer);
+                                    photon.threePointTimer = null;
+                                }
                                 // 如果变成目标颜色，启动3秒等待定时器
                                 if (photon.colorIndex === targetColorIndex) {
                                     photon.threePointTimer = setTimeout(() => {
+                                        // 3秒内未再次点击此光子，得3分并移除
                                         if (gameActive && photons[index] === photon && photon.hasThreePointChance) {
                                             score += 3;
                                             updateScoreDisplay();
@@ -1180,9 +1182,10 @@
                                         photon.threePointTimer = null;
                                     }, 3000);
                                 }
+                                // 注意：如果未变成目标颜色，则无定时器，光子继续存在，等待下次点击或自然消失
                             }
 
-                            // ----- 画布点击事件（统一处理）-----
+                            // ----- 画布点击事件 -----
                             function handleCanvasClick(e) {
                                 if (!gameActive || isPaused || captchaActive) return;
                                 e.preventDefault();
@@ -1218,19 +1221,23 @@
                             canvas.addEventListener('click', handleCanvasClick);
                             canvas.addEventListener('touchstart', handleCanvasClick, { passive: false });
 
-                            // ----- 画布自适应与绘制 -----
+                            // ----- 画布自适应 -----
                             function resizeCanvas() {
                                 const container = canvas.parentElement;
                                 if (!container) return;
                                 const containerWidth = container.clientWidth - 40;
                                 if (containerWidth < 250) return;
                                 const oldW = canvas.width, oldH = canvas.height;
-                                let newW = Math.min(containerWidth, 600);
-                                let newH = newW * 0.8;
-                                canvas.width = newW;
-                                canvas.height = newH;
+                                // 动态宽度：移动端无最大限制，桌面端限制600px
+                                let newWidth = containerWidth;
+                                if (containerWidth > 700) {
+                                    newWidth = Math.min(containerWidth, 600);
+                                }
+                                let newHeight = newWidth * 0.8;
+                                canvas.width = newWidth;
+                                canvas.height = newHeight;
                                 if (gameActive && oldW > 0 && oldH > 0) {
-                                    const sx = newW / oldW, sy = newH / oldH;
+                                    const sx = newWidth / oldW, sy = newHeight / oldH;
                                     photons.forEach(p => {
                                         p.x *= sx;
                                         p.y *= sy;
@@ -1273,7 +1280,7 @@
                                 animationFrame = requestAnimationFrame(updateGame);
                             }
 
-                            // ----- 计时器（每秒更新）-----
+                            // ----- 计时器 -----
                             function startTimer() {
                                 if (gameInterval) clearInterval(gameInterval);
                                 gameInterval = setInterval(() => {
@@ -1285,7 +1292,6 @@
                                         if (timeValue <= 0) {
                                             endGame();
                                         } else if (!captchaTriggered && captchaTriggerTime !== null && timeValue <= captchaTriggerTime) {
-                                            // 触发人机验证
                                             showCaptcha();
                                         }
                                     } else {
@@ -1296,15 +1302,13 @@
                                 }, 1000);
                             }
 
-                            // ----- 人机验证（SweetAlert2）-----
+                            // ----- 人机验证（已修复：答对判对，答错判错）-----
                             async function showCaptcha() {
                                 if (!gameActive || currentMode !== 'timed' || captchaTriggered || captchaActive) return;
                                 captchaTriggered = true;
-                                // 暂停游戏
                                 pauseGameForCaptcha();
                                 captchaActive = true;
 
-                                // 第一步：选择难度
                                 const { value: difficulty, isDismissed } = await Swal.fire({
                                     title: '⚡ 能工智人验证 ⚡',
                                     html: `
@@ -1325,7 +1329,6 @@
                                 });
 
                                 if (isDismissed || difficulty === undefined) {
-                                    // 用户跳过验证，直接恢复游戏
                                     resumeGameAfterCaptcha();
                                     return;
                                 }
@@ -1333,15 +1336,13 @@
                                 const level = difficulty;
                                 const bank = questionBank[level];
                                 if (!bank || bank.length === 0) {
-                                    // 题库不存在，直接恢复
                                     resumeGameAfterCaptcha();
                                     return;
                                 }
                                 const randomIndex = Math.floor(Math.random() * bank.length);
                                 const question = bank[randomIndex];
 
-                                // 第二步：显示题目，用自定义按钮选择答案
-                                const { value: answerIndex, isDismissed: answerDismissed } = await Swal.fire({
+                                const { value: userAnswerIndex } = await Swal.fire({
                                     title: '📖 请作答',
                                     html: `
                                         <p style="font-size: 1.2rem;">${question.text}</p>
@@ -1353,78 +1354,48 @@
                                     showCancelButton: true,
                                     cancelButtonText: '放弃',
                                     didOpen: () => {
-                                        const btns = document.querySelectorAll('.swal2-option');
-                                        btns.forEach(btn => {
+                                        document.querySelectorAll('.swal2-option').forEach(btn => {
                                             btn.addEventListener('click', () => {
                                                 const idx = parseInt(btn.dataset.index);
-                                                Swal.clickConfirm(idx);
+                                                Swal.close();
+                                                checkAnswer(idx);
                                             });
                                         });
-                                    },
-                                    preConfirm: (result) => {
-                                        if (result === undefined) {
-                                            Swal.showValidationMessage('请选择一个选项');
-                                            return false;
-                                        }
-                                        return result;
                                     }
                                 });
 
-                                if (answerDismissed || answerIndex === undefined) {
-                                    // 用户放弃
+                                async function checkAnswer(userIndex) {
+                                    const correct = parseInt(question.answer);
+                                    const user = parseInt(userIndex);
+                                    const isCorrect = user === correct;
+
+                                    let bonusTime = Math.floor(timeValue * 0.05) || 1;
+                                    let timeChange = isCorrect ? bonusTime : -bonusTime;
+                                    timeValue = Math.max(0, Math.min(999, timeValue + timeChange));
+                                    timerSpan.textContent = timeValue;
+                                    timerDisplaySpan.innerHTML = `剩余: <span id="timer">${timeValue}</span>s`;
+
+                                    let scoreAdd = 0;
+                                    if (isCorrect) {
+                                        scoreAdd = level === 1 ? 1 : level === 2 ? 2 : 3;
+                                        score += scoreAdd;
+                                        updateScoreDisplay();
+                                        await Swal.fire({ icon: 'success', title: '回答正确！', html: `+${scoreAdd}分，时间${timeChange > 0 ? '增加' : '减少'}${Math.abs(timeChange)}秒！`, timer: 2000, showConfirmButton: false });
+                                    } else {
+                                        await Swal.fire({ icon: 'error', title: '回答错误', html: `时间减少${-timeChange}秒`, timer: 2000, showConfirmButton: false });
+                                    }
                                     resumeGameAfterCaptcha();
-                                    return;
                                 }
-
-                                // 处理答案
-                                const isCorrect = (answerIndex === question.answer);
-                                let bonusTime = Math.floor(timeValue * 0.05);
-                                if (bonusTime < 1) bonusTime = 1;
-                                let timeChange = isCorrect ? bonusTime : -bonusTime;
-                                let newTime = timeValue + timeChange;
-                                if (newTime < 0) newTime = 0;
-                                if (newTime > 999) newTime = 999;
-                                timeValue = newTime;
-                                timerSpan.textContent = timeValue;
-                                timerDisplaySpan.innerHTML = `剩余: <span id="timer">${timeValue}</span>s`;
-
-                                let scoreAdd = 0;
-                                if (isCorrect) {
-                                    if (level === 1) scoreAdd = 1;
-                                    else if (level === 2) scoreAdd = 2;
-                                    else scoreAdd = 3;
-                                    score += scoreAdd;
-                                    updateScoreDisplay();
-                                    await Swal.fire({
-                                        icon: 'success',
-                                        title: '回答正确！',
-                                        html: `+${scoreAdd}分，游戏时间${timeChange > 0 ? '增加' : '减少'}${Math.abs(timeChange)}秒。<br>“恭喜你是能工智人”`,
-                                        timer: 2000,
-                                        showConfirmButton: false
-                                    });
-                                } else {
-                                    await Swal.fire({
-                                        icon: 'error',
-                                        title: '回答错误',
-                                        html: `游戏时间减少${-timeChange}秒。下次加油哦！`,
-                                        timer: 2000,
-                                        showConfirmButton: false
-                                    });
-                                }
-
-                                resumeGameAfterCaptcha();
                             }
 
-                            // 暂停游戏用于人机验证（清除所有活动）
                             function pauseGameForCaptcha() {
                                 if (gameInterval) clearInterval(gameInterval);
                                 if (generationInterval) clearInterval(generationInterval);
                                 if (animationFrame) cancelAnimationFrame(animationFrame);
                                 isPaused = true;
-                                pauseBtn.disabled = true;  // 验证期间禁用暂停按钮
+                                pauseBtn.disabled = true;
                             }
 
-                            // 恢复游戏（验证结束）
                             function resumeGameAfterCaptcha() {
                                 if (!gameActive) return;
                                 isPaused = false;
@@ -1441,11 +1412,9 @@
                                 clearInterval(gameInterval);
                                 clearInterval(generationInterval);
                                 if (animationFrame) cancelAnimationFrame(animationFrame);
-                                // 清除所有大光子的定时器
                                 photons.forEach(p => {
                                     if (p.type === 'large' && p.threePointTimer) clearTimeout(p.threePointTimer);
                                 });
-                                // 显示结束画面
                                 ctx.fillStyle = 'rgba(0,0,0,0.7)';
                                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                                 ctx.font = 'bold ' + (canvas.width > 400 ? '24px' : '20px') + ' sans-serif';
@@ -1454,22 +1423,18 @@
                                 ctx.fillText('寻光结束', canvas.width / 2, canvas.height / 2 - 20);
                                 ctx.font = (canvas.width > 400 ? '18px' : '16px') + ' sans-serif';
                                 ctx.fillText(`捕光: ${score}`, canvas.width / 2, canvas.height / 2 + 20);
-                                // 如果验证弹窗还开着，强制关闭
                                 if (Swal.isVisible()) Swal.close();
                             }
 
                             // ----- 重启游戏 -----
                             function restartGame() {
-                                // 关闭可能打开的弹窗
                                 if (Swal.isVisible()) Swal.close();
-                                // 清理所有定时器
                                 if (gameInterval) clearInterval(gameInterval);
                                 if (generationInterval) clearInterval(generationInterval);
                                 if (animationFrame) cancelAnimationFrame(animationFrame);
                                 photons.forEach(p => {
                                     if (p.type === 'large' && p.threePointTimer) clearTimeout(p.threePointTimer);
                                 });
-                                // 重置状态
                                 gameActive = true;
                                 isPaused = false;
                                 captchaTriggered = false;
@@ -1482,7 +1447,6 @@
 
                                 if (currentMode === 'timed') {
                                     timeValue = Math.floor(Math.random() * (TIMED_MODE_MAX - TIMED_MODE_MIN + 1) + TIMED_MODE_MIN);
-                                    // 计算验证触发点（剩余时间的 25% ~ 75% 之间）
                                     const triggerOffset = Math.floor(timeValue * (0.25 + Math.random() * 0.5));
                                     captchaTriggerTime = timeValue - triggerOffset;
                                     if (captchaTriggerTime < 1) captchaTriggerTime = 1;
@@ -1494,13 +1458,12 @@
                                     timerDisplaySpan.innerHTML = `已玩: <span id="timer">0</span>s`;
                                     captchaTriggerTime = null;
                                 }
-
                                 resizeCanvas();
                                 startTimer();
                                 generationInterval = setInterval(generatePhoton, 400);
                                 updateGame();
                                 pauseBtn.disabled = (currentMode !== 'casual');
-                                pauseBtn.textContent = '❚❚';  // 重置图标
+                                pauseBtn.textContent = '❚❚';
                             }
 
                             // ----- 手动暂停/恢复（仅休闲模式）-----
@@ -1510,8 +1473,8 @@
                                 clearInterval(gameInterval);
                                 clearInterval(generationInterval);
                                 if (animationFrame) cancelAnimationFrame(animationFrame);
-                                drawCanvas(); // 立即显示暂停遮罩
-                                pauseBtn.textContent = '▶';   // 图标改为播放
+                                drawCanvas();
+                                pauseBtn.textContent = '▶';
                             }
 
                             function resumeGame() {
@@ -1520,7 +1483,7 @@
                                 startTimer();
                                 generationInterval = setInterval(generatePhoton, 400);
                                 updateGame();
-                                pauseBtn.textContent = '❚❚';  // 图标改为暂停
+                                pauseBtn.textContent = '❚❚';
                             }
 
                             pauseBtn.addEventListener('click', () => {
@@ -1547,7 +1510,7 @@
                                     modeTimedBtn.classList.add('active');
                                     modeCasualBtn.classList.remove('active');
                                     pauseBtn.disabled = true;
-                                    if (isPaused) resumeGame(); // 确保不在暂停状态
+                                    if (isPaused) resumeGame();
                                     captchaTriggered = false;
                                     captchaActive = false;
                                     if (Swal.isVisible()) Swal.close();
@@ -1555,7 +1518,7 @@
                                     modeCasualBtn.classList.add('active');
                                     modeTimedBtn.classList.remove('active');
                                     pauseBtn.disabled = false;
-                                    captchaTriggerTime = null; // 休闲模式无验证
+                                    captchaTriggerTime = null;
                                 }
                                 restartGame();
                             }
@@ -1564,13 +1527,11 @@
                             modeCasualBtn.addEventListener('click', () => switchMode('casual'));
                             restartBtn.addEventListener('click', restartGame);
 
-                            // 页面加载初始化
                             window.addEventListener('load', () => {
                                 resizeCanvas();
                                 restartGame();
                             });
 
-                            // 页面卸载清理
                             window.addEventListener('beforeunload', () => {
                                 if (gameInterval) clearInterval(gameInterval);
                                 if (generationInterval) clearInterval(generationInterval);
@@ -1631,8 +1592,9 @@
             </div>
         
         <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
-            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
-            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 「 一个神奇的blog平台 」  驱动 
+</span>
+            <span class="text-sm lg:block">主题&nbsp;：被略微改动的<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.2</a></span>
         </div>
         
         
@@ -1661,6 +1623,225 @@
         
     </div>  
 </footer>
+
+
+
+<!-- ====================== 磁性磁吸鼠标指针0.0.3（不完美但支持前端开关版）====================== -->
+<!-- 
+  ============================================
+  参数修改指南（请根据需求修改下方配置区域）
+  ============================================
+  
+  1. 指针外观修改 → 见 <style> 标签内
+  2. 吸附强度、边距等 → 见 JS 中的配置区域
+  3. 强制正方形元素 → fixedSquareSelectors 数组
+  4. 忽略元素 → ignoreClasses 数组（已适配游戏区域：忽略画布和游戏内文字，但不忽略按钮）
+-->
+<style>
+.pointer {
+    --width: 4rem;
+    --height: 4rem;
+    position: fixed;
+    top: calc(var(--height) / -2);
+    left: calc(var(--width) / -2);
+    width: var(--width);
+    height: var(--height);
+    transition: all 0.16s ease-out;
+    pointer-events: none;
+    z-index: 99999 !important;
+    animation: rotatePointer 10s linear infinite;
+}
+@keyframes rotatePointer {
+    0% { transform: translate(var(--x, 0), var(--y, 0)) rotate(0deg); }
+    100% { transform: translate(var(--x, 0), var(--y, 0)) rotate(360deg); }
+}
+.pointer .corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #17f700;
+    background: transparent;
+}
+.pointer .corner:nth-child(1) { top:0; left:0; border-right:none; border-bottom:none; }
+.pointer .corner:nth-child(2) { top:0; right:0; border-left:none; border-bottom:none; }
+.pointer .corner:nth-child(3) { bottom:0; left:0; border-right:none; border-top:none; }
+.pointer .corner:nth-child(4) { bottom:0; right:0; border-left:none; border-top:none; }
+.pointer .center-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px;
+    height: 4px;
+    background: #17f700;
+    border-radius: 50%;
+}
+@media (max-width: 768px) {
+    .pointer { display: none !important; }
+}
+</style>
+
+<div class="pointer">
+  <div class="corner"></div>
+  <div class="corner"></div>
+  <div class="corner"></div>
+  <div class="corner"></div>
+  <div class="center-dot"></div>
+</div>
+
+<script data-swup-reload-script>
+// 全局开关（本地存储记忆）
+let magneticEnabled = localStorage.getItem('magnetic') !== 'false';
+const pointerEl = document.querySelector('.pointer');
+
+// 初始化显示状态
+function updatePointer() {
+  pointerEl.style.display = magneticEnabled ? '' : 'none';
+}
+updatePointer();
+
+const pointer = {
+  container: document.querySelector(".pointer"),
+  current_target: null,
+  init() {
+    if (window.innerWidth <= 768) return;
+    window.addEventListener("mousemove", this.move.bind(this));
+    this.bindAll();
+    document.addEventListener('swup:contentReplaced', () => this.bindAll());
+  },
+  move(e) {
+    if (!magneticEnabled) return;
+    let x = e.clientX;
+    let y = e.clientY;
+    if (this.current_target) {
+      const rect = this.current_target.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const sticky = 0.05;
+      x = cx + (x - cx) * sticky;
+      y = cy + (y - cy) * sticky;
+    }
+    this.container.style.setProperty('--x', x + 'px');
+    this.container.style.setProperty('--y', y + 'px');
+    this.container.style.transform = `translate(${x}px, ${y}px)`;
+  },
+  stopRotate() { this.container.style.animation = "none"; },
+  startRotate() { this.container.style.animation = "rotatePointer 10s linear infinite"; },
+  bindAll() {
+    // ======================== 配置区域 ========================
+    const ignoreClasses = [
+      "#gameCanvas",
+      ".game-title",
+      ".game-subtitle",
+      ".game-info",
+      ".score",
+      ".timer",
+      ".target-info",
+      ".sequence-info",
+      "#targetColorBox",
+      "#score",
+      "#timer",
+      "#timerDisplay",
+      "#sequenceCount",
+      "svg",
+      ".fa-xs", ".fa-sm", ".fa-lg", ".fa-fw",
+      ".fa-solid", ".fa-regular",
+      "input", "textarea", "select"
+    ];
+    const tightTextClasses = [
+      ".home-article-content.markdown-body",
+      ".customize-info.my-1"
+    ];
+    const mustHaveClasses = [
+      "button",
+      ".mode-btn",
+      ".restart-btn",
+      ".pause-btn",
+      ".back-home",
+      "a[href]",
+      ".avatar",
+      ".social-contact-item a",
+      "#text"
+    ];
+    const normalTextClasses = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "span", "div", "li"];
+    const fixedSquareSelectors = [
+      ".social-contact-item a",
+      "#text",
+      ".avatar"
+    ];
+    const fixedSquareSize = "60px";
+    // ==========================================================
+
+    const ignoreSelector = ignoreClasses.join(",");
+    const tightTextSelector = tightTextClasses.join(",");
+    const mustHaveSelector = mustHaveClasses.join(",");
+    const fixedSquareSelector = fixedSquareSelectors.join(",");
+
+    const bindElement = (ele) => {
+      if (ele.closest(ignoreSelector)) return;
+      if (ele.hasAttribute('data-magnetic-bound')) return;
+      ele.setAttribute('data-magnetic-bound', 'true');
+
+      let getPadding = () => 4;
+      if (ele.matches(tightTextSelector)) getPadding = () => 2;
+      else if (ele.matches(mustHaveSelector)) getPadding = () => 8;
+
+      ele.addEventListener("mouseenter", () => {
+        this.current_target = ele;
+        this.stopRotate();
+        let width, height;
+        if (ele.matches(fixedSquareSelector)) {
+          width = fixedSquareSize;
+          height = fixedSquareSize;
+        } else {
+          const r = ele.getBoundingClientRect();
+          const pad = getPadding();
+          width = (r.width + pad) + 'px';
+          height = (r.height + pad) + 'px';
+        }
+        this.container.style.setProperty("--width", width);
+        this.container.style.setProperty("--height", height);
+      });
+      ele.addEventListener("mouseleave", () => {
+        this.current_target = null;
+        this.startRotate();
+        this.container.style.setProperty("--width", "4rem");
+        this.container.style.setProperty("--height", "4rem");
+      });
+    };
+
+    const allTargets = document.querySelectorAll([tightTextSelector, mustHaveSelector, normalTextClasses.join(",")].join(","));
+    allTargets.forEach(ele => {
+      const rect = ele.getBoundingClientRect();
+      if (normalTextClasses.some(cls => ele.matches(cls)) && (rect.width < 26 || rect.height < 26)) return;
+      bindElement(ele);
+    });
+
+    document.body.addEventListener("mouseenter", (e) => {
+      let target = e.target;
+      while (target && target !== document.body) {
+        if (target.matches && (target.matches(tightTextSelector) || target.matches(mustHaveSelector) || target.matches(normalTextClasses.join(",")))) {
+          const rect = target.getBoundingClientRect();
+          if (normalTextClasses.some(cls => target.matches(cls)) && (rect.width < 26 || rect.height < 26)) break;
+          if (!target.hasAttribute('data-magnetic-bound')) bindElement(target);
+          break;
+        }
+        target = target.parentElement;
+      }
+    }, true);
+  }
+};
+pointer.init();
+
+// ========== 开关监听（点击立即生效）==========
+window.toggleMagnetic = function () {
+  magneticEnabled = !magneticEnabled;
+  localStorage.setItem('magnetic', magneticEnabled);
+  updatePointer();
+}
+</script>
+
+
         </div>
     </div>
 
@@ -1668,6 +1849,7 @@
 
     <div class="right-side-tools-container">
         <div class="side-tools-container">
+	<!-- 隐藏工具列表（点击齿轮后显示） -->
 	<ul class="hidden-tools-list">
 		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
 			<i class="fa-regular fa-magnifying-glass-plus"></i>
@@ -1681,6 +1863,12 @@
 			<i class="fa-regular fa-moon"></i>
 		</li>
 
+		<!-- ========== 新增：磁性鼠标指针开关 ========== -->
+	    <li class="right-bottom-tools tool-magnetic-pointer flex justify-center items-center" onclick="toggleMagnetic()">
+            <i class="fa-regular fa-computer-mouse"></i>
+        </li>
+        <!-- ========== 新增结束 ========== -->
+
 		<!-- rss -->
 		
 
@@ -1691,6 +1879,7 @@
 		</li>
 	</ul>
 
+    <!-- 可见工具列表（始终显示） -->
 	<ul class="visible-tools-list">
 		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
 			<i class="fa-regular fa-cog fa-spin"></i>
