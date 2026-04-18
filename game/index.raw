@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>EmulatorJS 游戏内核</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #1a1a1a;
+        }
+        #game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* 可选：加载提示 */
+        .loading-tip {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #aaa;
+            font-family: sans-serif;
+            font-size: 12px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="game"></div>
+    </div>
+    <div class="loading-tip">🎮 等待加载游戏… 可通过上层页面选择ROM</div>
+
+    <script>
+        // 模拟器全局配置（初始无游戏，等待消息）
+        let currentRomUrl = null;
+        let emulatorLoaded = false;
+        let pendingRomUrl = null;
+
+        // 初始化模拟器的函数
+        function initEmulator(romUrl) {
+            // 移除旧的容器
+            const oldDiv = document.getElementById('game');
+            if (oldDiv) oldDiv.remove();
+            const newDiv = document.createElement('div');
+            newDiv.id = 'game';
+            document.getElementById('game-container').appendChild(newDiv);
+            
+            // 移除旧的 loader 脚本（如果有）
+            const oldScript = document.querySelector('script[src*="loader.js"]');
+            if (oldScript) oldScript.remove();
+            
+            // 设置全局配置
+            window.EJS_player = "#game";
+            window.EJS_core = "gba";   // 可考虑根据文件扩展名动态调整，这里固定GBA
+            window.EJS_gameUrl = romUrl;
+            window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+            window.EJS_language = "zh-CN";
+            
+            // 加载 loader
+            const script = document.createElement('script');
+            script.src = "https://cdn.emulatorjs.org/stable/data/loader.js";
+            script.onload = function() {
+                emulatorLoaded = true;
+                // 隐藏提示
+                document.querySelector('.loading-tip').style.display = 'none';
+            };
+            document.body.appendChild(script);
+        }
+
+        // 监听来自父页面的消息
+        window.addEventListener('message', function(event) {
+            // 可选：验证来源，开发时使用 *，生产建议限制域名
+            // if (event.origin !== 'http://localhost:4000') return;
+            if (event.data && event.data.type === 'load-rom') {
+                const romUrl = event.data.romUrl;
+                if (!romUrl) return;
+                // 清理旧的 URL
+                if (currentRomUrl) {
+                    URL.revokeObjectURL(currentRomUrl);
+                }
+                currentRomUrl = romUrl;
+                // 显示加载提示
+                const tip = document.querySelector('.loading-tip');
+                if (tip) tip.style.display = 'block';
+                tip.textContent = '🔄 正在加载游戏，请稍候…';
+                initEmulator(currentRomUrl);
+            }
+        });
+
+        // 可选：页面关闭时释放内存
+        window.addEventListener('beforeunload', function() {
+            if (currentRomUrl) {
+                URL.revokeObjectURL(currentRomUrl);
+            }
+        });
+    </script>
+</body>
+</html>
