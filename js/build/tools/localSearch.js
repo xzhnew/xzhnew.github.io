@@ -58,11 +58,12 @@ export default function initLocalSearch() {
             if (!n) return;
             let e = r.value.trim().toLowerCase();
 
-            // ===== 多类别敏感词拦截 =====
+            // ============================== 多类别敏感词拦截 ==============================
             const sensitiveCategories = [
                 window.sensitiveSelfharm,
-                window.sensitiveAbuse
-                // 如果有更多类别，继续添加（注意顺序决定优先级）
+                window.sensitiveAbuse,
+                window.sensitiveSarcasm
+                // 如果有更多类别，继续添加（注意顺序决定优先级）**********************************************
             ];
 
             for (let category of sensitiveCategories) {
