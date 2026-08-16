@@ -5122,6 +5122,72 @@ div.tabs .tab-content .tab-pane .highlight:last-child,
 div.tabs .tab-content .tab-pane .note:last-child {
   margin-bottom: 0;
 }
+.weather-card-wrapper {
+  width: 100%;
+}
+.weather-card-content {
+  width: 100%;
+  padding: 0;
+}
+.weather-title-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  font-family: var(--font-family, 'Geist Variable', 'Noto Sans SC', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  padding: 6px 2px 8px 2px;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.weather-title-line .weather-city {
+  flex-shrink: 0;
+}
+.weather-title-line .weather-time {
+  flex-shrink: 0;
+  font-weight: 400;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.weather-pre {
+  white-space: pre !important;
+  font-family: 'Cascadia Code', 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+  word-spacing: 0 !important;
+  tab-size: 4 !important;
+  margin: 10px 0 4px 0 !important;
+  padding: 0 4px !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--text-primary) !important;
+  text-align: left !important;
+  direction: ltr !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+.weather-loading,
+.weather-error {
+  text-align: center;
+  padding: 0.8rem 0;
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+}
+.weather-error button {
+  transition: all 0.2s ease;
+}
+.weather-error button:hover {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+}
 .page-title-header {
   font-size: 3.2rem;
   line-height: 1;
