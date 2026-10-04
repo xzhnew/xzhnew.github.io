@@ -1,8 +1,5 @@
-// ============================================================
-// 天气卡片 - 完全参照 wttr.in 的 ASCII 图形 + 颜色方案
-// ============================================================
 
-// ---- 1. 天气代码 -> 中文描述（按类型分组） ----
+// ---- 1. 天气代码 -> 中文描述 ----
 var weatherCodeMap = {
 
   // ===== 晴 / 云 =====
@@ -64,7 +61,7 @@ var weatherCodeMap = {
   '182': '零星雨夹雪',
   '320': '中到大雨夹雪',
 };
-// ---- 2. 天气代码 -> 图形类型（按图形类型分组） ----
+// ---- 2. 天气代码 -> 图形类型 ----
 var codeToArtType = {
 
   // ----- sunny（晴） -----
@@ -157,28 +154,85 @@ var codeToArtType = {
 
 // ---- 3. 风向箭头 ----
 var windArrowMap = {
-  'N': '↓', 'NNE': '↙', 'NE': '←', 'ENE': '↙',
-  'E': '←', 'ESE': '↖', 'SE': '↑', 'SSE': '↖',
-  'S': '↑', 'SSW': '↗', 'SW': '→', 'WSW': '↗',
-  'W': '→', 'WNW': '↘', 'NW': '↓', 'NNW': '↘'
+  'N': '↓', 'NNE': '↙', 'NE': '↙', 'ENE': '↙',
+  'E': '←', 'ESE': '↖', 'SE': '↖', 'SSE': '↖',
+  'S': '↑', 'SSW': '↗', 'SW': '↗', 'WSW': '↗',
+  'W': '→', 'WNW': '↘', 'NW': '↘', 'NNW': '↘'
 };
 
 // ---- 4. 颜色 ----
+// ---- Dark ----
 var C = {
-  sun:       '#ffff00',
-  cloud:     '#bcbcbc',
-  rain:      '#87afff',
-  snow:      '#ffffff',
-  fog:       '#b39ddb',
-  mist:      '#ce93d8',
-  haze:      '#9e9e9e',
-  lightning: '#ffeb3b',
-  temp:      '#ffd700',
-  tempF:     '#ffaf00',
-  wind:      '#87ff00',
-  vis:       '#87afff',
-  precip:    '#87afff'
+  sun:       '#fff143', // 鵝黃
+  cloud:     '#e9e7ef', // 銀白
+  rain:      '#44cef6', // 藍
+  snow:      '#ffffff', // 精白
+  fog:       '#f2ecde', // 縞
+  mist:      '#e3f9fd', // 瑩白
+  haze:      '#a1afc9', // 藍灰色
+  lightning: '#fff143', // 鵝黃
+  temp:      '#f0c239', // 緗色
+  tempF:     '#e29c45', // 黃櫨
+  wind:      '#7fecad', // 縹
+  vis:       '#d6ecf0', // 月白
+  precip:    '#30dff3'  // 湖藍
 };
+// ---- Light ----
+// 暂时与 Dark 同一套亮色（用户要求试试效果），表结构独立保留便于后续改回
+// 例外：cloud 用纯黑（浅底上银白几乎不可见）
+var C_LIGHT = {
+  sun:       '#ffa400', // 橙黃
+  cloud:     '#000000', // 純黑
+  rain:      '#44cef6', // 藍
+  snow:      '#ffffff', // 精白
+  fog:       '#f2ecde', // 縞
+  mist:      '#e3f9fd', // 瑩白
+  haze:      '#a1afc9', // 藍灰色
+  lightning: '#fff143', // 鵝黃
+  temp:      '#f0c239', // 緗色
+  tempF:     '#e29c45', // 黃櫨
+  wind:      '#7fecad', // 縹
+  vis:       '#d6ecf0', // 月白
+  precip:    '#30dff3'  // 湖藍
+};
+
+/** 是否为暗色模式 */
+function isDarkMode() {
+  try {
+    // 优先看 body 上主题挂的模式 class —— 它是主题自己的语义标记，最可靠。
+    if (document.body && document.body.classList.contains('dark-mode')) return true;
+    if (document.body && document.body.classList.contains('light-mode')) return false;
+    // class 还没挂上（weather.js 的 module 脚本比 main.js 先执行）时，回退到读变量值
+    var bg = '';
+    if (document.body) {
+      bg = getComputedStyle(document.body).getPropertyValue('--background-color').trim();
+    }
+    if (!bg) {
+      bg = getComputedStyle(document.documentElement).getPropertyValue('--background-color').trim();
+    }
+    if (!bg) return false;
+    var r, g, b;
+    var hex = bg.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+    if (hex) {
+      var h = hex[1];
+      if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+      r = parseInt(h.slice(0, 2), 16);
+      g = parseInt(h.slice(2, 4), 16);
+      b = parseInt(h.slice(4, 6), 16);
+    } else {
+      var m = bg.match(/\d+(\.\d+)?/g);
+      if (!m || m.length < 3) return false;
+      r = parseFloat(m[0]); g = parseFloat(m[1]); b = parseFloat(m[2]);
+    }
+    var lum = (r * 299 + g * 587 + b * 114) / 1000;
+    return lum < 128;
+  } catch (e) { return false; }
+}
+
+/** 返回当前模式对应的颜色表 */
+function getPalette() {
+  return isDarkMode() ? C : C_LIGHT;
+}
 
 // ---- 5. ASCII 图形 ----
 var ART_W = 13;
@@ -199,17 +253,17 @@ var ART = {
     [{ t: '', c: '' }]
   ],
   cloudy: [
+    [{ t: '', c: '' }],
     [{ t: '     .-.', c: 'cloud' }],
     [{ t: '    (   ).', c: 'cloud' }],
     [{ t: '   (___(__)', c: 'cloud' }],
-    [{ t: '', c: '' }],
     [{ t: '', c: '' }]
   ],
   overcast: [
+    [{ t: '', c: '' }],
     [{ t: '     .--.', c: 'cloud' }],
     [{ t: '  .-(    ).', c: 'cloud' }],
     [{ t: ' (___.__)__)', c: 'cloud' }],
-    [{ t: '', c: '' }],
     [{ t: '', c: '' }]
   ],
   drizzle: [
@@ -269,9 +323,9 @@ var ART = {
     [{ t: '    * * *', c: 'snow' }]
   ],
   snow: [
-    [{ t: ' _`/""', c: 'sun' }, { t: '.-.', c: 'cloud' }],
-    [{ t: '  ,\\_', c: 'sun' }, { t: '(   ).', c: 'cloud' }],
-    [{ t: '   /', c: 'sun' }, { t: '(___(__)', c: 'cloud' }],
+    [{ t: '     .-.', c: 'cloud' }],
+    [{ t: '    (   ).', c: 'cloud' }],
+    [{ t: '    (___(__)', c: 'cloud' }],
     [{ t: '    * * * *', c: 'snow' }],
     [{ t: '   * * * *', c: 'snow' }]
   ],
@@ -297,9 +351,9 @@ var ART = {
     [{ t: "   ' '", c: 'rain' }, { t: 'z', c: 'lightning' }, { t: "' '", c: 'rain' }, { t: 'z', c: 'lightning' }]
   ],
   sleet: [
-    [{ t: ' _`/""', c: 'sun' }, { t: '.-.', c: 'cloud' }],
-    [{ t: '  ,\\_', c: 'sun' }, { t: '(   ).', c: 'cloud' }],
-    [{ t: '   /', c: 'sun' }, { t: '(___(__)', c: 'cloud' }],
+    [{ t: '     .-.', c: 'cloud' }],
+    [{ t: '    (   ).', c: 'cloud' }],
+    [{ t: '    (___(__)', c: 'cloud' }],
     [{ t: "    '", c: 'rain' }, { t: ' * ', c: 'snow' }, { t: "'", c: 'rain' }, { t: ' *', c: 'snow' }],
     [{ t: '   *', c: 'snow' }, { t: " ' ", c: 'rain' }, { t: '*', c: 'snow' }, { t: " '", c: 'rain' }]
   ],
@@ -355,10 +409,13 @@ function buildArtLine(segments) {
     var seg = segments[i];
     if (!seg.t) continue;
     plain += seg.t;
-    if (seg.c && C[seg.c]) {
-      html.push('<span style="color:' + C[seg.c] + ' !important">' + escapeHtml(seg.t) + '</span>');
+    var text = escapeHtml(seg.t);
+    text = text.replace(/\./g, '<span class="w-dot">.</span>');
+    var pal = getPalette();
+    if (seg.c && pal[seg.c]) {
+      html.push('<span style="color:' + pal[seg.c] + ' !important">' + text + '</span>');
     } else {
-      html.push(escapeHtml(seg.t));
+      html.push(text);
     }
   }
   var pad = ART_W - plain.length;
@@ -369,6 +426,10 @@ function buildArtLine(segments) {
 }
 
 // ---- 7. 构建天气显示内容 ----
+function seg(t, c) {
+  return { t: String(t), c: c };
+}
+
 function buildWeatherContent(weatherData) {
   var cur = weatherData.current_condition[0];
   var code = String(cur.weatherCode || '113');
@@ -381,27 +442,86 @@ function buildWeatherContent(weatherData) {
   var desc = weatherCodeMap[code] || '晴天';
   var artType = codeToArtType[code] || 'sunny';
   var arrow = windArrowMap[windDir] || '→';
-
   var art = ART[artType] || ART.sunny;
 
-  var dataLines = [
-    { text: desc, color: null },
-    { text: temp + '(' + feels + ')°C', color: C.temp },
-    { text: arrow + ' ' + wind + ' km/h', color: C.wind },
-    { text: vis + ' km', color: C.vis },
-    { text: precip + ' mm', color: C.precip }
+  var today = (weatherData.weather && weatherData.weather[0]) || {};
+  var maxT = parseInt(today.maxtempC, 10);
+  var minT = parseInt(today.mintempC, 10);
+  if (isNaN(maxT)) maxT = temp;
+  if (isNaN(minT)) minT = feels;
+
+  var sym = symbolColor();
+  var rows = [
+    [seg(desc, sym)],
+    [seg(maxT + '（' + minT + '）', levelColor('temp', maxT)), seg('°C', sym)],
+    [seg(arrow, sym), seg(' ' + wind, levelColor('wind', wind)), seg(' km/h', sym)],
+    [seg(vis, levelColor('vis', vis)), seg(' km', sym)],
+    [seg(precip, levelColor('precip', precip)), seg(' mm', sym)]
   ];
 
   var lines = [];
   for (var i = 0; i < 5; i++) {
-    var artHtml = buildArtLine(art[i] || [{ t: '', c: '' }]);
-    var d = dataLines[i];
-    var dataHtml = d.color
-      ? '<span style="color:' + d.color + ' !important">' + escapeHtml(d.text) + '</span>'
-      : escapeHtml(d.text);
-    lines.push(artHtml + '  ' + dataHtml);
+    var segs = (rows[i] || []).map(function (s) {
+      return '<span style="color:' + s.c + ' !important">' + escapeHtml(s.t) + '</span>';
+    }).join('');
+    lines.push(buildArtLine(art[i] || [{ t: '', c: '' }]) + '  ' + segs);
   }
   return lines.join('\n');
+}
+
+// ---- 7a. 符号色 ----
+function symbolColor() {
+  return isDarkMode() ? '#ffffff' : '#000000';
+}
+
+// ---- 7b. 数值分级色表 ----
+var LEVELS = {
+  temp: [
+    { max: 0,   dark: '#30dff3', light: '#30dff3' }, // 严寒
+    { max: 10,  dark: '#44cef6', light: '#44cef6' }, // 冷
+    { max: 18,  dark: '#7fecad', light: '#7fecad' }, // 凉
+    { max: 25,  dark: '#00e079', light: '#00e079' }, // 舒适
+    { max: 30,  dark: '#fff143', light: '#fff143' }, // 暖
+    { max: 35,  dark: '#e29c45', light: '#e29c45' }, // 热
+    { max: 999, dark: '#ff4c00', light: '#ff4c00' }  // 酷热  朱紅 / 緋紅
+  ],
+  wind: [
+    { max: 3,   dark: '#d6ecf0', light: '#d6ecf0' }, // 无风
+    { max: 11,  dark: '#c0ebd7', light: '#c0ebd7' }, // 微风
+    { max: 19,  dark: '#7fecad', light: '#7fecad' }, // 和风
+    { max: 28,  dark: '#d9b611', light: '#d9b611' }, // 强风  秋香色
+    { max: 38,  dark: '#e29c45', light: '#e29c45' }, // 大风
+    { max: 74,  dark: '#ff7500', light: '#ff7500' }, // 狂风
+    { max: 999, dark: '#ff2121', light: '#ff2121' }  // 暴风  大紅 / 胭脂
+  ],
+  vis: [
+    { max: 1,   dark: '#ff4c00', light: '#ff4c00' }, // 极差
+    { max: 4,   dark: '#e29c45', light: '#e29c45' }, // 差
+    { max: 10,  dark: '#fff143', light: '#fff143' }, // 中
+    { max: 20,  dark: '#7fecad', light: '#7fecad' }, // 良
+    { max: 999, dark: '#00e079', light: '#00e079' }  // 优    青翠 / 松花綠
+  ],
+  precip: [
+    { max: 0.05, dark: '#d6ecf0', light: '#a1afc9' }, // 无雨    月白 / 藍灰色
+    { max: 1,    dark: '#d3e0f3', light: '#2e4e7e' }, // 小雨    淡青 / 藏青
+    { max: 10,   dark: '#44cef6', light: '#065279' }, // 中到大雨 藍   / 靛藍
+    { max: 25,   dark: '#801dae', light: '#56004f' }, // 暴雨    青蓮 / 紫棠
+    { max: 999,  dark: '#ff4c00', light: '#9d2933' }  // 特大暴雨 朱紅 / 胭脂
+  ]
+};
+
+/** 按数值查分级色 */
+function levelColor(kind, value) {
+  var table = LEVELS[kind];
+  if (!table) return symbolColor();
+  var v = parseFloat(value);
+  if (isNaN(v)) v = 0;
+  var dark = isDarkMode();
+  for (var i = 0; i < table.length; i++) {
+    if (v < table[i].max) return dark ? table[i].dark : table[i].light;
+  }
+  var last = table[table.length - 1];
+  return dark ? last.dark : last.light;
 }
 
 // ---- 8. 主逻辑 ----
@@ -428,12 +548,12 @@ function isCacheStale(cached) {
   return !cached || (Date.now() - cached.time) > CACHE_TTL;
 }
 
-// ---- 8a. 定位（三级优先链：浏览器GPS → IP定位 → 配置城市） ----
+// ---- 8a. 定位 ----
 
-var GEO_CACHE_KEY = 'weather_geo_v2';
+var GEO_CACHE_KEY = 'weather_geo_v3';
 var GEO_CACHE_TTL = 24 * 60 * 60 * 1000; // GPS 坐标缓存 24 小时（人不会突然搬家）
 
-// 英文城市名 -> 中文（ipinfo.io / wttr.in 返回英文时用，覆盖全国省会及主要城市）
+// 英文 -> 中文城市名
 var CITY_CN_MAP = {
   // 直辖市
   'Beijing': '北京', 'Shanghai': '上海', 'Tianjin': '天津', 'Chongqing': '重庆',
@@ -473,23 +593,23 @@ var CITY_CN_MAP = {
   'Kaohsiung': '高雄'
 };
 
-// 把城市名规范成"尽量两个中文"的展示名
+// 城市名规范化
 function normalizeCityName(name) {
   if (!name) return name;
   name = name.trim();
   // 1. 精确匹配
   if (CITY_CN_MAP[name]) return CITY_CN_MAP[name];
-  // 2. 已是中文：去掉 市/区/县/省 等后缀，尽量保留核心字
+  // 2. 中文去后缀
   if (/[\u4e00-\u9fa5]/.test(name)) {
     return name.replace(/(市|区|县|省|特别行政区|自治州|盟|旗)$/, '');
   }
-  // 3. 去空格/标点后匹配（如 "Xi An" -> "XiAn", "Xi'an" -> "Xian"）
+  // 3. 去空格标点后匹配
   var compact = name.replace(/[\s'\-]/g, '');
   if (CITY_CN_MAP[compact]) return CITY_CN_MAP[compact];
   for (var key in CITY_CN_MAP) {
     if (key.replace(/[\s'\-]/g, '') === compact) return CITY_CN_MAP[key];
   }
-  // 4. 前缀匹配（如 Nanchangfu -> Nanchang -> 南昌）
+  // 4. 前缀匹配
   for (var key2 in CITY_CN_MAP) {
     var kc = key2.replace(/[\s'\-]/g, '');
     if (compact.length > kc.length && compact.slice(0, kc.length).toLowerCase() === kc.toLowerCase()) {
@@ -501,73 +621,86 @@ function normalizeCityName(name) {
 }
 
 /**
- * 获取城市名，按优先级：
- *   1. 浏览器 Geolocation API（GPS/WiFi定位，最准确，需用户授权一次）
- *   2. ipinfo.io（免费、支持HTTPS、无需key）
+ * 获取定位信息，按优先级：
+ *   1. 浏览器 Geolocation API（GPS，最准确）
+ *   2. ipinfo.io（IP 归属地，仅 HTTPS）
  *   3. 配置的 fallback_city
- * 返回 { city: string, source: 'geo'|'ip'|'config' }
+ *
+ * 关键设计：query 与 displayName 分离。
+ *   - query      拿去请求 wttr.in；GPS 时是"纬度,经度"原始坐标，wttr.in 原生支持
+ *     这样避免了"坐标 -> Nominatim 反查城市名 -> 再用城市名查天气"的有损往返。
+ *   - displayName 拿去显示；Nominatim 反查只为拿中文城市名，不参与天气定位。
+ * 返回 { query, displayName, source }
  */
 async function resolveCity(fallbackCity) {
-  // Level 1: 浏览器 GPS 定位（只问一次，结果缓存到 localStorage）
-  var geoCity = await tryBrowserGeo();
-  if (geoCity) return { city: normalizeCityName(geoCity), source: 'geo' };
+  // Level 1: 浏览器 GPS 定位（坐标是唯一真值，直接给 wttr.in）
+  var geo = await tryBrowserGeo();
+  if (geo && geo.lat != null && geo.lon != null) {
+    return {
+      query: geo.lat.toFixed(4) + ',' + geo.lon.toFixed(4),
+      displayName: normalizeCityName(geo.city || fallbackCity),
+      source: 'geo'
+    };
+  }
 
-  // Level 2: IP 定位（ipinfo.io 免费版支持 HTTPS）
+  // Level 2: IP 定位（只有城市名，没有坐标）
   var ipCity = await tryIpGeo();
-  if (ipCity) return { city: normalizeCityName(ipCity), source: 'ip' };
+  if (ipCity) {
+    return { query: ipCity, displayName: normalizeCityName(ipCity), source: 'ip' };
+  }
 
   // Level 3: 配置默认值
-  return { city: normalizeCityName(fallbackCity), source: 'config' };
+  return { query: fallbackCity, displayName: normalizeCityName(fallbackCity), source: 'config' };
 }
 
-/** 浏览器原生定位 → 反查城市名 */
+/** 浏览器原生定位 -> { lat, lon, city }（city 仅用于显示） */
 async function tryBrowserGeo() {
   // 先检查缓存（GPS 坐标一天内有效）
   try {
     var cachedGeo = localStorage.getItem(GEO_CACHE_KEY);
     if (cachedGeo) {
       var g = JSON.parse(cachedGeo);
-      if (g.city && (Date.now() - g.time) < GEO_CACHE_TTL) return g.city;
+      if (g.lat != null && g.lon != null && (Date.now() - g.time) < GEO_CACHE_TTL) return g;
     }
   } catch (e) { }
 
-  // 没有缓存或过期，请求浏览器定位
   if (!('geolocation' in navigator)) return null;
 
   try {
-    var pos = await new Promise(function(resolve, reject) {
+    var pos = await new Promise(function (resolve, reject) {
       navigator.geolocation.getCurrentPosition(
         resolve,
         reject,
-        { enableHighAccuracy: false, timeout: 8000, maximumAge: GEO_CACHE_TTL }
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: GEO_CACHE_TTL }
       );
     });
-    var lat = pos.coords.latitude.toFixed(4);
-    var lon = pos.coords.longitude.toFixed(4);
+    var lat = parseFloat(pos.coords.latitude.toFixed(4));
+    var lon = parseFloat(pos.coords.longitude.toFixed(4));
 
-    // 用坐标反查城市名（走 Nominatim OpenStreetMap，免费无 key）
+    var city = await reverseGeocode(lat, lon);
+
+    try {
+      localStorage.setItem(GEO_CACHE_KEY, JSON.stringify({ time: Date.now(), lat: lat, lon: lon, city: city }));
+    } catch (e) { }
+    return { lat: lat, lon: lon, city: city };
+  } catch (e) {
+    // 用户拒绝授权 / 超时 / 离线 -> 静默降级
+    return null;
+  }
+}
+
+/** 坐标反查中文城市名（Nominatim，失败返回 null，不影响主流程） */
+async function reverseGeocode(lat, lon) {
+  try {
     var res = await fetch(
-      'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10&addressdetails=1',
+      'https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&lat=' + lat + '&lon=' + lon,
       { signal: AbortSignal.timeout(5000), headers: { 'Accept-Language': 'zh-CN,zh;q=0.9' } }
     );
     if (!res.ok) return null;
     var data = await res.json();
-
-    // 优先取 city → town → county → state
     var addr = data.address || {};
-    var city = addr.city || addr.town || addr.county || addr.state || addr.province;
-    if (!city) return null;
-
-    // 缓存（存归一化后的城市名）
-    var normCity = normalizeCityName(city);
-    try {
-      localStorage.setItem(GEO_CACHE_KEY, JSON.stringify({ time: Date.now(), city: normCity }));
-    } catch (e) { }
-    return normCity;
-  } catch (e) {
-    // 用户拒绝授权 / 超时 / 离线 → 静默降级
-    return null;
-  }
+    return addr.city || addr.town || addr.county || null;
+  } catch (e) { return null; }
 }
 
 /** IP 归属地定位（ipinfo.io 免费 HTTPS，50k/月） */
@@ -578,20 +711,8 @@ async function tryIpGeo() {
     });
     if (!res.ok) return null;
     var data = await res.json();
-    // ipinfo.io 返回英文城市名（如 "Nanchang"）
     return data.city || null;
   } catch (e) { return null; }
-}
-
-function detectCity(weatherData, resolvedCity) {
-  try {
-    var area = weatherData.nearest_area && weatherData.nearest_area[0];
-    if (area && area.areaName && area.areaName[0] && area.areaName[0].value) {
-      // wttr.in 返回英文城市名；如果已通过 GPS/IP 解析出更准确的城市名，优先用解析结果
-      return resolvedCity;
-    }
-  } catch (e) { }
-  return resolvedCity;
 }
 
 export default async function initWeather() {
@@ -602,7 +723,6 @@ export default async function initWeather() {
   var fallbackCity = config.fallback_city || '南昌';
   container.innerHTML = '<div class="weather-loading">加载中...</div>';
 
-  // 先用缓存立即渲染（15 分钟内的旧数据也先显示，避免白屏等待）
   var cached = readCache();
   if (cached) {
     var cachedCity = normalizeCityName(cached.city);
@@ -620,13 +740,10 @@ export default async function initWeather() {
 
 async function refreshWeather(container, fallbackCity) {
   try {
-    // 三级定位：GPS → IP → 配置默认
+    // 三级定位：GPS 坐标 → IP 城市 → 配置默认
     var resolved = await resolveCity(fallbackCity);
-    var city = resolved.city;
-
-    // 用解析出的城市名请求天气（比让 wttr.in 猜 IP 准得多）
-    var weatherData = await getWeatherJSON(city);
-    city = detectCity(weatherData, city); // 最终确认城市名
+    var weatherData = await getWeatherJSON(resolved.query);
+    var city = resolved.displayName;
     _lastWeatherData = weatherData;
     _lastCity = city;
     writeCache(city, weatherData);
@@ -653,6 +770,9 @@ function startRefreshTimer(container, fallbackCity) {
     refreshWeather(el, fallbackCity);
   }, CACHE_TTL);
 
+  // 监听明暗模式切换，立即换色（不等定时刷新）
+  watchModeChange();
+
   // 用户把标签页切回来时，如果数据已过期就立即刷新
   if (!window.__weatherVisBound) {
     window.__weatherVisBound = true;
@@ -678,6 +798,41 @@ async function getWeatherJSON(city) {
 
 function renderCard(container, city, content) {
   var now = new Date();
+  var card = container.closest ? (container.closest('.weather-card') || container) : container;
+  var artType = getArtType();
+  // Light：inline background 直接盖（优先级高于一切 class 规则）
+  // Dark：清空 inline，交给 CSS 的 .dark-mode 规则还原主题背景
+  if (isDarkMode()) {
+    card.style.background = '';
+  } else if (artType && BG_LIGHT[artType]) {
+    card.style.background = BG_LIGHT[artType];
+  } else {
+    card.style.background = '';
+  }
+  if (artType) {
+    card.setAttribute('data-weather', artType);
+  } else {
+    card.removeAttribute('data-weather');
+  }
+  console.log('[Weather] renderCard', {
+    city: city,
+    isDark: isDarkMode(),
+    artType: artType,
+    bodyClass: document.body.className,
+    varBg: getComputedStyle(document.body).getPropertyValue('--background-color').trim(),
+    inlineBg: card.style.background,
+    dataWeather: card.getAttribute('data-weather')
+  });
+  // 数据到位后，若期间模式变过，这里用当前模式补一次背景（覆盖上面写的旧值）
+  if (window.__weatherModeDirty) {
+    window.__weatherModeDirty = false;
+    if (isDarkMode()) {
+      card.style.background = '';
+    } else if (artType && BG_LIGHT[artType]) {
+      card.style.background = BG_LIGHT[artType];
+    }
+    console.log('[Weather] 补渲染（数据到达前模式曾变化）->', isDarkMode() ? 'dark' : 'light', card.style.background);
+  }
   container.innerHTML =
     '<div class="weather-card-content">' +
     '  <div class="weather-title-line" id="weather-title">' +
@@ -686,6 +841,47 @@ function renderCard(container, city, content) {
     '  </div>' +
     '  <div class="weather-pre">' + content + '</div>' +
     '</div>';
+}
+
+// ---- 7c. 卡片背景色 ----
+//  用 inline style 直接写，优先级仅次于 !important，压过主题 .sidebar-links 的
+//  background（该规则嵌套编译为 .home-sidebar-container .sidebar-links）。
+//  CSS 里的 9 档规则保留作为降级与文档，inline style 会覆盖它。
+var BG_LIGHT = {
+  sunny: '#FFF3CD', partly_cloudy: '#FFF8E1', cloudy: '#EFF1F4', overcast: '#E3E7EC',
+  mist: '#EFEAF6', haze: '#EFEAF6', fog: '#EFEAF6', ice_fog: '#EFEAF6',
+  drizzle: '#E3F2FD', light_rain: '#E3F2FD', rain: '#E3F2FD', heavy_rain: '#E3F2FD',
+  heavy_downpour: '#E3F2FD', showers: '#E3F2FD',
+  thunderstorm: '#E8EAF6',
+  light_snow: '#F2F7FB', snow: '#F2F7FB', heavy_snow: '#F2F7FB', snow_showers: '#F2F7FB',
+  freezing_rain: '#E0F2F1', sleet: '#E0F2F1', rain_snow_showers: '#E0F2F1'
+};
+
+/** 从当前天气数据反推 ASCII 图类型（用于背景色） */
+function getArtType() {
+  try {
+    if (_lastWeatherData && _lastWeatherData.current_condition && _lastWeatherData.current_condition[0]) {
+      var code = String(_lastWeatherData.current_condition[0].weatherCode || '113');
+      return codeToArtType[code] || 'sunny';
+    }
+  } catch (e) { }
+  return null;
+}
+
+/** 监听明暗模式切换：立即重渲染，让 ASCII 字符色（inline style）和 data-weather 同步更新，
+ *  不必等 15 分钟定时刷新 */
+function watchModeChange() {
+  if (window.__weatherModeObserver || !document.body || !window.MutationObserver) return;
+  window.__weatherModeObserver = new MutationObserver(function () {
+    var el = document.getElementById('redefine-weather');
+    if (!el) return;
+    // 数据还没到（首次加载时 main.js 往往比 wttr.in 响应更快）——
+    // 此时不能直接返回，否则这次模式切换就丢了。打个标记，等数据到位后补渲染。
+    if (!_lastWeatherData) { window.__weatherModeDirty = true; return; }
+    renderCard(el, _lastCity || '', buildWeatherContent(_lastWeatherData));
+    startClock(el);
+  });
+  window.__weatherModeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 }
 
 function formatDate(date) {
@@ -731,7 +927,7 @@ function testWeather(code) {
   console.log('测试: ' + desc + ' (代码 ' + code + ')');
 }
 
-// ---- 11. 显示不重复的天气类型及代码 ----
+// ---- 11. 天气类型列表 ----
 function listAllCodes() {
   // 构建名称到代码的映射（取第一个出现的代码）
   var nameToCode = {};
@@ -764,11 +960,27 @@ var isInitialized = false;
 function init() {
   if (isInitialized) return;
   isInitialized = true;
+  // 先注册模式监听，再拉数据。
+  // weather.js 与主题 main.js 都是 type="module"，按声明顺序执行（weather 在前），
+  // initWeather 里的 await 会让出控制权，main.js 可能在数据返回前就挂好了
+  // body.light-mode/.dark-mode。若此时才注册 observer，这次 class 变化会被永久错过，
+  // 导致卡片停留在旧模式的背景上。故必须最先注册。
+  watchModeChange();
   initWeather();
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else { init(); }
+// window.load 时主题 main.js 的 initMain 已确保跑完，模式 class 必定就位。
+// 此时无条件用最终模式重渲染一次，根治「数据先到 / 模式后定」的竞态。
+window.addEventListener('load', function () {
+  window.__weatherModeDirty = true;
+  var el = document.getElementById('redefine-weather');
+  if (el && _lastWeatherData) {
+    renderCard(el, _lastCity || '', buildWeatherContent(_lastWeatherData));
+    startClock(el);
+  }
+});
 document.addEventListener('swup:pageView', function () {
   var container = document.getElementById('redefine-weather');
   if (container) {

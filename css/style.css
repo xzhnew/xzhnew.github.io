@@ -5161,6 +5161,8 @@ div.tabs .tab-content .tab-pane .note:last-child {
   line-height: 1.35 !important;
   letter-spacing: 0 !important;
   word-spacing: 0 !important;
+  font-variant-ligatures: none !important;
+  font-feature-settings: 'liga' 0, 'calt' 0 !important;
   tab-size: 4 !important;
   margin: 10px 0 4px 0 !important;
   padding: 0 4px !important;
@@ -5173,6 +5175,96 @@ div.tabs .tab-content .tab-pane .note:last-child {
   direction: ltr !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
+}
+.w-dot {
+  display: inline-block;
+  width: 0.6em;
+  text-align: center;
+  font-variant-ligatures: none !important;
+  font-feature-settings: 'liga' 0, 'calt' 0 !important;
+}
+.weather-card {
+  transition: background-color 0.4s ease;
+}
+.light-mode .sidebar-links.weather-card[data-weather="sunny"] {
+  background: #fff3cd;
+}
+.light-mode .sidebar-links.weather-card[data-weather="partly_cloudy"] {
+  background: #fff8e1;
+}
+.light-mode .sidebar-links.weather-card[data-weather="cloudy"] {
+  background: #eff1f4;
+}
+.light-mode .sidebar-links.weather-card[data-weather="overcast"] {
+  background: #e3e7ec;
+}
+.light-mode .sidebar-links.weather-card[data-weather="mist"],
+.light-mode .sidebar-links.weather-card[data-weather="haze"],
+.light-mode .sidebar-links.weather-card[data-weather="fog"],
+.light-mode .sidebar-links.weather-card[data-weather="ice_fog"] {
+  background: #efeaf6;
+}
+.light-mode .sidebar-links.weather-card[data-weather="drizzle"],
+.light-mode .sidebar-links.weather-card[data-weather="light_rain"],
+.light-mode .sidebar-links.weather-card[data-weather="rain"],
+.light-mode .sidebar-links.weather-card[data-weather="heavy_rain"],
+.light-mode .sidebar-links.weather-card[data-weather="heavy_downpour"],
+.light-mode .sidebar-links.weather-card[data-weather="showers"] {
+  background: #e3f2fd;
+}
+.light-mode .sidebar-links.weather-card[data-weather="thunderstorm"] {
+  background: #e8eaf6;
+}
+.light-mode .sidebar-links.weather-card[data-weather="light_snow"],
+.light-mode .sidebar-links.weather-card[data-weather="snow"],
+.light-mode .sidebar-links.weather-card[data-weather="heavy_snow"],
+.light-mode .sidebar-links.weather-card[data-weather="snow_showers"] {
+  background: #f2f7fb;
+}
+.light-mode .sidebar-links.weather-card[data-weather="freezing_rain"],
+.light-mode .sidebar-links.weather-card[data-weather="sleet"],
+.light-mode .sidebar-links.weather-card[data-weather="rain_snow_showers"] {
+  background: #e0f2f1;
+}
+.dark-mode .sidebar-links.weather-card[data-weather="sunny"] {
+  background: var(--background-color);
+}
+.dark-mode .sidebar-links.weather-card[data-weather="partly_cloudy"] {
+  background: var(--background-color);
+}
+.dark-mode .sidebar-links.weather-card[data-weather="cloudy"] {
+  background: var(--background-color);
+}
+.dark-mode .sidebar-links.weather-card[data-weather="overcast"] {
+  background: var(--background-color);
+}
+.dark-mode .sidebar-links.weather-card[data-weather="mist"],
+.dark-mode .sidebar-links.weather-card[data-weather="haze"],
+.dark-mode .sidebar-links.weather-card[data-weather="fog"],
+.dark-mode .sidebar-links.weather-card[data-weather="ice_fog"] {
+  background: var(--background-color);
+}
+.dark-mode .sidebar-links.weather-card[data-weather="drizzle"],
+.dark-mode .sidebar-links.weather-card[data-weather="light_rain"],
+.dark-mode .sidebar-links.weather-card[data-weather="rain"],
+.dark-mode .sidebar-links.weather-card[data-weather="heavy_rain"],
+.dark-mode .sidebar-links.weather-card[data-weather="heavy_downpour"],
+.dark-mode .sidebar-links.weather-card[data-weather="showers"] {
+  background: var(--background-color);
+}
+.dark-mode .sidebar-links.weather-card[data-weather="thunderstorm"] {
+  background: var(--background-color);
+}
+.dark-mode .sidebar-links.weather-card[data-weather="light_snow"],
+.dark-mode .sidebar-links.weather-card[data-weather="snow"],
+.dark-mode .sidebar-links.weather-card[data-weather="heavy_snow"],
+.dark-mode .sidebar-links.weather-card[data-weather="snow_showers"] {
+  background: var(--background-color);
+}
+.dark-mode .sidebar-links.weather-card[data-weather="freezing_rain"],
+.dark-mode .sidebar-links.weather-card[data-weather="sleet"],
+.dark-mode .sidebar-links.weather-card[data-weather="rain_snow_showers"] {
+  background: var(--background-color);
 }
 .weather-loading,
 .weather-error {
